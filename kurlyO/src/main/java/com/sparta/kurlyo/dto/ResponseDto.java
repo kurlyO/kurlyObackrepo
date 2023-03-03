@@ -14,7 +14,7 @@ public class ResponseDto<T> {
     public static <T> ResponseDto<T> success(T result) {
         return new ResponseDto<>(true, result);
     }
-    public static <T> ResponseDto<T> fail(T result) {
-        return new ResponseDto<>(true, null);
+    public static <T> ResponseDto<T> fail() {
+        return new ResponseDto<>(false, null);
     }
 }
