@@ -4,7 +4,6 @@ import com.sparta.kurlyo.security.UserDetailsImpl;
 import com.sparta.kurlyo.service.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,8 +17,9 @@ public class CartController {
     private final CartService cartService;
 
     @PostMapping("/cart/{goodsId}")
-    public void addCart(@PathVariable long goodsId,
+    public String addCart(@PathVariable long goodsId,
                         @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return cartService.addCart(goodsId, userDetails.getUsername());
     }
+
 }
