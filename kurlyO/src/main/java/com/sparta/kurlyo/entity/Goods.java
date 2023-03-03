@@ -19,7 +19,7 @@ public class Goods {
     private Category category;
 
     @Column(nullable = false)
-    private String goodsname;
+    private String goodsName;
 
     @Column(nullable = false)
     private Integer price;
@@ -31,12 +31,11 @@ public class Goods {
     private String image;
 
     @Column(nullable = false)
-    private String packaging;
+    private Packaging packaging;
 
     @Column
     private String content;
 
     @Column(nullable = false)
     private String createdAt;
-
 }
