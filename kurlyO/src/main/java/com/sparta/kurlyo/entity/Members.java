@@ -8,10 +8,13 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Members {
+public class Members extends TimeStamped {
     @Id @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false, unique = true)
+    private String memberName;
 
     @Column(nullable = false, unique = true)
     private String name;

@@ -10,6 +10,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
+import org.springframework.security.core.Authentication;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
