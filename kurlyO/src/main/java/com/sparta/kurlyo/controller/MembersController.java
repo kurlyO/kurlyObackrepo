@@ -2,7 +2,7 @@ package com.sparta.kurlyo.controller;
 
 import com.sparta.kurlyo.dto.LoginRequestDto;
 import com.sparta.kurlyo.dto.SignupRequestDto;
-import com.sparta.kurlyo.entity.Response;
+import com.sparta.kurlyo.dto.Response;
 import com.sparta.kurlyo.service.MembersService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

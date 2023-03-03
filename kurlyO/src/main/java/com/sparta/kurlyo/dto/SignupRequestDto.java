@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 @Getter
 public class SignupRequestDto {
 
-    @Pattern(regexp = "^[a-z0-9]+$", message = "아이디는 소문자와 숫자만 가능합니다.")
+    @Pattern(regexp = "^[a-z0-9]+$", message ="아이디는 소문자와 숫자만 가능 합니다.")
     @Size(min=4, max=10, message = "4 ~ 10길이의 소문자, 숫자만 가능합니다.")
     private String account;
 
