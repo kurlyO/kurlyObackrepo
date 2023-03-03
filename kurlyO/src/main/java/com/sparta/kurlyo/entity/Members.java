@@ -14,7 +14,7 @@ public class Members extends TimeStamped {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String memberName;
+    private String account;
 
     @Column(nullable = false, unique = true)
     private String name;
@@ -39,6 +39,18 @@ public class Members extends TimeStamped {
 
     @Enumerated(EnumType.STRING)
     private UserRoleEnum role;
+
+    public Members(String accout, String password, String name, String email, String address, String phone, String gender, String birth, UserRoleEnum role) {
+        this.account = accout;
+        this.password = password;
+        this.name = name;
+        this.address = address;
+        this.email = email;
+        this.phone = phone;
+        this.gender = gender;
+        this.birth = birth;
+        this.role = role;
+    }
 
 //    public void changeRole(UserRoleEnum roleEnum) {
 //        this.role = roleEnum;

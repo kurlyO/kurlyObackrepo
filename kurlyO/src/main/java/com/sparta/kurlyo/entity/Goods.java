@@ -31,12 +31,11 @@ public class Goods {
     private String image;
 
     @Column(nullable = false)
-    private String packaging;
+    private Packaging packaging;
 
     @Column
     private String content;
 
     @Column(nullable = false)
     private String createdAt;
-
 }
