@@ -17,10 +17,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
-        Members member = membersRepository.findByName(name)
+        Members member = membersRepository.findByAccount(name)
                 .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
 
-        return new UserDetailsImpl(member, member.getName());
+        return new UserDetailsImpl(member, member.getAccount());
     }
 
 }
