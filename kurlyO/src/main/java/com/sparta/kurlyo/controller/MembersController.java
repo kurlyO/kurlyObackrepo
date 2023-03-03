@@ -13,7 +13,12 @@ public class MembersController {
 
 //    @PostMapping("/signup")
 //    public ResponseEntity<Response> signup(@RequestBody @Valid SignupRequestDto signupRequestDto) {
-//        return ;
+//        return membersService.signup(signupRequestDto);
+//    }
+
+//    @PostMapping("/login")
+//    public ResponseEntity<Response> signup(@RequestBody LoginRequestDto loginRequestDto) {
+//        return membersService.login(loginRequestDto);
 //    }
 
 }
