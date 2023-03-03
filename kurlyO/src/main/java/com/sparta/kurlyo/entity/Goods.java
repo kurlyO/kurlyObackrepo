@@ -1,0 +1,42 @@
+package com.sparta.kurlyo.entity;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+
+@Entity
+@Getter
+@NoArgsConstructor
+public class Goods {
+    @Id
+    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
+
+    @Column(nullable = false)
+    private String goodsname;
+
+    @Column(nullable = false)
+    private Integer price;
+
+    @Column(nullable = false)
+    private String summary;
+
+    @Column(nullable = false)
+    private String image;
+
+    @Column(nullable = false)
+    private String packaging;
+
+    @Column
+    private String content;
+
+    @Column(nullable = false)
+    private String createdAt;
+
+}
