@@ -23,7 +23,7 @@ public class CartService {
     @Transactional
     public String addCart(long goodsId, String username) {
         Members member = getMember(username);
-        Optional<Cart> cart = cartRepository.findByGoods_IdAndMembers_Account(goodsId, username);
+        Optional<Cart> cart = cartRepository.findByGoods_IdAndMember_Account(goodsId, username);
         if(cart.isPresent()){
             cart.get().addAmount();
             return "장바구니의 상품을 하나 추가하였습니다.";
