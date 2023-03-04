@@ -2,15 +2,10 @@ package com.sparta.kurlyo.controller;
 
 import com.sparta.kurlyo.dto.GoodsListResponseDto;
 import com.sparta.kurlyo.dto.GoodsRequestDto;
-import com.sparta.kurlyo.dto.GoodsResponseDto;
 import com.sparta.kurlyo.dto.ResponseDto;
-import com.sparta.kurlyo.entity.UserRoleEnum;
-import com.sparta.kurlyo.security.UserDetailsImpl;
 import com.sparta.kurlyo.dto.Response;
 import com.sparta.kurlyo.service.GoodsService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;

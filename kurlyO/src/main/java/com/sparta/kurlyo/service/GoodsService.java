@@ -8,7 +8,6 @@ import com.sparta.kurlyo.dto.SuccessMessage;
 import com.sparta.kurlyo.dto.ResponseDto;
 import com.sparta.kurlyo.entity.Category;
 import com.sparta.kurlyo.entity.Goods;
-import com.sparta.kurlyo.entity.Members;
 import com.sparta.kurlyo.repository.CategoryRepository;
 import com.sparta.kurlyo.repository.GoodsRepository;
 import com.sparta.kurlyo.s3.S3Uploader;
