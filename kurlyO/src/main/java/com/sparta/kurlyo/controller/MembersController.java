@@ -20,6 +20,7 @@ import javax.validation.Valid;
 public class MembersController {
     private final MembersService membersService;
 
+
     @PostMapping("/signup")
     public ResponseEntity<Response> signup(@RequestBody @Valid SignupRequestDto signupRequestDto) {
         return membersService.signup(signupRequestDto);
