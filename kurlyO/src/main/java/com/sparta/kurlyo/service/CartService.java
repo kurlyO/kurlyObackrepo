@@ -20,8 +20,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
-import java.lang.reflect.Member;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,16 +32,6 @@ public class CartService {
     private final GoodsRepository goodsRepository;
 
     @Transactional
-    public String addCart(long goodsId, String username) {
-//        Members member = getMember(username);
-//        Optional<Cart> cart = cartRepository.findByGoods_IdAndMembers_Account(goodsId, username);
-//        if(cart.isPresent()){
-//            cart.get().addAmount();
-//            return "장바구니의 상품을 하나 추가하였습니다.";
-//        }
-//        Goods goods = getGoods(goodsId);
-//        cartRepository.save(new Cart(member, goods));
-        return "장바구니에 해당 상품을 추가하였습니다.";
     public ResponseEntity<Response> addCart(long goodsId, String username) {
         Members member = getMember(username);
         Optional<Cart> cart = cartRepository.findByGoods_IdAndMember_Account(goodsId, username);
