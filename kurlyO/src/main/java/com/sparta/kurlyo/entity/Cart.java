@@ -1,5 +1,6 @@
 package com.sparta.kurlyo.entity;
 
+import com.sparta.kurlyo.dto.CartRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -33,5 +34,9 @@ public class Cart extends TimeStamped {
 
     public void addAmount() {
         this.amount += 1;
+    }
+
+    public void update(int amount){
+        this.amount += amount;
     }
 }

@@ -89,10 +89,10 @@ public class MembersService {
         if (!(member.isPresent() && password.equals(member.get().getPassword()))) {
             throw new CustomException(MEMBER_NOT_FOUND);
         }
-        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(member.get().getName(), member.get().getRole()));
+        String token = jwtUtil.createToken(member.get().getAccount(), member.get().getRole());
+        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);
 
-        String token = jwtUtil.createToken(member.get().getName(), member.get().getRole());
-        LoginResponseDto loginResponseDto = new LoginResponseDto(membersRepository.findByName(member.get().getName()).get().getName(), token);
+        LoginResponseDto loginResponseDto = new LoginResponseDto(member.get().getName(), token);
         return new Response().toResponseEntity(LOGIN_SUCCESS, loginResponseDto);
 
     }
