@@ -1,5 +1,6 @@
 package com.sparta.kurlyo.entity;
 
+import com.sparta.kurlyo.dto.CartRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -8,7 +9,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Cart {
+public class Cart extends TimeStamped {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,5 +34,9 @@ public class Cart {
 
     public void addAmount() {
         this.amount += 1;
+    }
+
+    public void update(int amount){
+        this.amount += amount;
     }
 }

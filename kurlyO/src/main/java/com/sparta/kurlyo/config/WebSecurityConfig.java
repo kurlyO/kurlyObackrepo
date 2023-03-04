@@ -38,9 +38,10 @@ public class WebSecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         // h2-console 사용 및 resources 접근 허용 설정
-        return (web) -> web.ignoring()
-                .requestMatchers(PathRequest.toH2Console())
-                .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+//        return (web) -> web.ignoring()
+//                .requestMatchers(PathRequest.toH2Console())
+//                .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+        return (web) -> web.ignoring().antMatchers("/h2-console/**");
     }
 
     @Bean
