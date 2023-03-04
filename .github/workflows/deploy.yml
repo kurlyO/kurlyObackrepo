@@ -43,11 +43,11 @@ jobs:
       ## create application.properties
       - name: make application.properties
         run:
-          touch ./src/main/resources/application.properties
+          touch ./kurlyO/src/main/resources/application.properties
         shell: bash
 
       - name: deliver application.properties
-        run: echo "${{ secrets.PROPERTIES }}" > ./src/main/resources/application.properties
+        run: echo "${{ secrets.PROPERTIES }}" > ./kurlyO/src/main/resources/application.properties
         shell: bash
 
 
