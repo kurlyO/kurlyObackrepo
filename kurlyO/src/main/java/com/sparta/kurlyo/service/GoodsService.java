@@ -48,14 +48,14 @@ public class GoodsService {
     @Transactional(readOnly = true)
     public ResponseDto<List<GoodsListResponseDto>> getCategoriesList() {
 //    public ResponseDto<List<GoodsListResponseDto>> getCategoriesList(int page, int size, String sortBy) {
-        String test = "test1";
-        Sort sort = Sort.by(Sort.Direction.DESC, "create_at");
+        Sort sort = Sort.by(Sort.Direction.DESC, "createAt");
 //        Sort sort = Sort.by(Sort.Direction.DESC, sortBy);
-        Pageable pageable = PageRequest.of(1, 99, sort);
+        Pageable pageable = PageRequest.of(0, 99, sort);
         Page<Goods> goodsPage = goodsRepository.findAll(pageable);
-        List<Goods> goods = goodsPage.getContent();
+
+//        List<Goods> goods = goodsRepository.findAll(); //test용
         List<GoodsListResponseDto> goodsList = new ArrayList<>();
-        for (Goods goodsGet : goods) {
+        for (Goods goodsGet : goodsPage) {
             goodsList.add(GoodsListResponseDto.of(goodsGet));
         }
         return ResponseDto.success(goodsList);
@@ -67,4 +67,5 @@ public class GoodsService {
         goodsRepository.save(new Goods(goodsRequestDto, imageUrl, category));
         return ResponseDto.success(null);
     }
+
 }
