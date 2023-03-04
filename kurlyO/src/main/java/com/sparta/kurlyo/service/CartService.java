@@ -3,6 +3,10 @@ package com.sparta.kurlyo.service;
 import com.sparta.kurlyo.dto.CartRequestDto;
 import com.sparta.kurlyo.dto.CartResponseDto;
 import com.sparta.kurlyo.dto.CartWholeResponseDto;
+import com.sparta.kurlyo.dto.CustomException;
+import com.sparta.kurlyo.dto.ExceptionMessage;
+import com.sparta.kurlyo.dto.Response;
+import com.sparta.kurlyo.dto.SuccessMessage;
 import com.sparta.kurlyo.entity.Cart;
 import com.sparta.kurlyo.entity.Goods;
 import com.sparta.kurlyo.entity.Members;
@@ -12,6 +16,7 @@ import com.sparta.kurlyo.repository.MembersRepository;
 import com.sparta.kurlyo.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,17 +44,27 @@ public class CartService {
 //        Goods goods = getGoods(goodsId);
 //        cartRepository.save(new Cart(member, goods));
         return "장바구니에 해당 상품을 추가하였습니다.";
+    public ResponseEntity<Response> addCart(long goodsId, String username) {
+        Members member = getMember(username);
+        Optional<Cart> cart = cartRepository.findByGoods_IdAndMember_Account(goodsId, username);
+        if (cart.isPresent()) {
+            cart.get().addAmount();
+        } else {
+            Goods goods = getGoods(goodsId);
+            cartRepository.save(new Cart(member, goods));
+        }
+        return Response.toResponseEntity(SuccessMessage.ADD_CART_SUCCESS);
     }
 
     private Goods getGoods(long goodsId) {
         return goodsRepository.findById(goodsId).orElseThrow(
-                () -> new IllegalArgumentException("해당 상품이 존재하지 않습니다.")
+                () -> new CustomException(ExceptionMessage.GOODS_NOT_FOUND)
         );
     }
 
     private Members getMember(String username) {
         return membersRepository.findByAccount(username).orElseThrow(
-                () -> new IllegalArgumentException("로그인 정보가 잘못되었습니다.")
+                () -> new CustomException(ExceptionMessage.UNAUTHORIZED_MEMBER)
         );
     }
 

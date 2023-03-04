@@ -1,5 +1,10 @@
 package com.sparta.kurlyo.dto;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+@NoArgsConstructor
 public class LoginResponseDto<T> {
     private String name;
     private T token;

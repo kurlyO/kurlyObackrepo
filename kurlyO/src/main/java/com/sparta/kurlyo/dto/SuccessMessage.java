@@ -11,6 +11,9 @@ public enum SuccessMessage {
     SIGN_UP_SUCCESS(HttpStatus.CREATED, "회원가입이 완료 되었습니다."),
     LOGIN_SUCCESS(HttpStatus.OK,"로그인이 완료 되었습니다."),
     USER_INFO_SUCCESS(HttpStatus.OK, "유저정보 불러오기 성공"),
+    GOODS_DETAIL_SUCCESS(HttpStatus.OK, "상품 정보 불러오기 성공"),
+    ADD_CART_SUCCESS(HttpStatus.OK, "해당 상품을 장바구니에 넣었습니다."),
+
     BOARD_GET_SUCCESS(HttpStatus.OK,"게시물 랜덤 보기 완료"),
     BOARD_POST_SUCCESS(HttpStatus.CREATED, "게시물 작성 완료"),
     BOARD_PUT_SUCCESS(HttpStatus.CREATED,"게시물 수정 완료"),

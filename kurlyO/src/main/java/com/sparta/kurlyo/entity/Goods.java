@@ -1,14 +1,16 @@
 package com.sparta.kurlyo.entity;
 
+import com.sparta.kurlyo.dto.GoodsRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
 @NoArgsConstructor
-public class Goods {
+public class Goods extends TimeStamped{
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +29,7 @@ public class Goods {
     @Column(nullable = false)
     private String summary;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String image;
 
     @Column(nullable = false)
@@ -36,6 +38,18 @@ public class Goods {
     @Column
     private String content;
 
-    @Column(nullable = false)
-    private String createdAt;
+    public Goods(GoodsRequestDto goodsRequestDto, String imageUrl, Category category){
+        this.category = category;
+        this.goodsName = goodsRequestDto.getGoodsName();
+        this.price = goodsRequestDto.getPrice();
+        this.summary = goodsRequestDto.getSummary();
+        this.image = imageUrl;
+        this.packaging = Packaging.valueOf(goodsRequestDto.getPackaging());
+        this.content = "images";
+        //컨텐츠 이미지 고려
+        //게시자가 관리자이지만 어떤 계정으로 등록하였는지 체크 필요할 듯 상의 후 결정
+    }
+
+//    @Column(nullable = false)
+//    private String createdAt;
 }

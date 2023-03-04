@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -38,10 +37,9 @@ public class WebSecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         // h2-console 사용 및 resources 접근 허용 설정
-//        return (web) -> web.ignoring()
+        return (web) -> web.ignoring()
 //                .requestMatchers(PathRequest.toH2Console())
-//                .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
-        return (web) -> web.ignoring().antMatchers("/h2-console/**");
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 
     @Bean
@@ -52,8 +50,8 @@ public class WebSecurityConfig {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.authorizeRequests().antMatchers("/api/member/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/board/**").permitAll()
-//                .antMatchers("/api/shop").permitAll()
+//                .antMatchers(HttpMethod.GET, "/board/**").permitAll()
+                .antMatchers("**").permitAll()
                 .anyRequest().authenticated()
                 // JWT 인증/인가를 사용하기 위한 설정
                 .and().addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);

@@ -16,7 +16,7 @@ public class Members extends TimeStamped {
     @Column(nullable = false, unique = true)
     private String account;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)

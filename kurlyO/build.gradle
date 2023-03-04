@@ -36,6 +36,15 @@ dependencies {
 
     // h2
     runtimeOnly 'com.h2database:h2'
+
+    //Swagger
+    implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+    implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+    //MySql AWS Rds기준 적용
+    implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.28'
+    //Aws S3
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
 }
 
 tasks.named('test') {

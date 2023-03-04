@@ -41,6 +41,7 @@ public class ExceptionController {
     public ResponseEntity missingRequestHeaderException(MissingRequestHeaderException ex) {
         return new Response().toAllExceptionResponseEntity(HttpStatus.BAD_REQUEST, "로그인이 되어있지 않습니다.", null);
     }
+
     // 500
     @ExceptionHandler({Exception.class})
     public ResponseEntity handleAll(final Exception ex) {
