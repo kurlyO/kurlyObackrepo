@@ -30,7 +30,8 @@ public class MembersService {
     @Transactional
     public ResponseEntity<Response> signup(SignupRequestDto signupRequestDto) {
         String accout = signupRequestDto.getAccount();
-        String password = passwordEncoder.encode(signupRequestDto.getPassword());
+//        String password = passwordEncoder.encode(signupRequestDto.getPassword());
+        String password = signupRequestDto.getPassword();
         String name = signupRequestDto.getName();
         String email = signupRequestDto.getEmail();
         String address = signupRequestDto.getAddress();
@@ -40,16 +41,16 @@ public class MembersService {
 
         //회원 중복 확인하기
         Optional<Members> findMember = membersRepository.findByAccount(accout);
-        if(findMember.isPresent()) {
+        if (findMember.isPresent()) {
             throw new CustomException(DUPLICATE_USER);
         }
         findMember = membersRepository.findByEmail(email);
-        if(findMember.isPresent()) {
+        if (findMember.isPresent()) {
             throw new CustomException(DUPLICATE_EMAIL);
         }
 
         UserRoleEnum role = UserRoleEnum.USER;
-        if(signupRequestDto.isAdmin()) {
+        if (signupRequestDto.isAdmin()) {
             if (!signupRequestDto.getAdminToken().equals(ADMIN_TOKEN)) {
                 throw new CustomException(UNAUTHORIZED_ADMIN);
             }
@@ -62,13 +63,30 @@ public class MembersService {
 
     }
 
+    //    @Transactional(readOnly = true)
+//    public ResponseEntity<Response> login(LoginRequestDto loginRequestDto, HttpServletResponse response) {
+//        String account = loginRequestDto.getAccount();
+//        String password = loginRequestDto.getPassword();
+//
+//        Optional<Members> member = membersRepository.findByAccount(account);
+//        if(!(member.isPresent() && passwordEncoder.matches(password, member.get().getPassword()))) {
+//            throw new CustomException(MEMBER_NOT_FOUND);
+//        }
+//        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(member.get().getName(), member.get().getRole()));
+//
+//        String token = jwtUtil.createToken(member.get().getName(), member.get().getRole());
+//        LoginResponseDto loginResponseDto = new LoginResponseDto(membersRepository.findByName(member.get().getName()).get().getName(), token);
+//        return new Response().toResponseEntity(LOGIN_SUCCESS, loginResponseDto);
+//
+//    }
+//
     @Transactional(readOnly = true)
     public ResponseEntity<Response> login(LoginRequestDto loginRequestDto, HttpServletResponse response) {
         String account = loginRequestDto.getAccount();
         String password = loginRequestDto.getPassword();
 
         Optional<Members> member = membersRepository.findByAccount(account);
-        if(!(member.isPresent() && passwordEncoder.matches(password, member.get().getPassword()))) {
+        if (!(member.isPresent() && password.equals(member.get().getPassword()))) {
             throw new CustomException(MEMBER_NOT_FOUND);
         }
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(member.get().getName(), member.get().getRole()));
