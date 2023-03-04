@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Goods {
+public class Goods extends TimeStamped {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +35,4 @@ public class Goods {
 
     @Column
     private String content;
-
-    @Column(nullable = false)
-    private String createdAt;
 }
