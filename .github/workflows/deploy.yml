@@ -1,4 +1,3 @@
-
 name: Deploy to Amazon EC2
 
 on:
@@ -42,13 +41,13 @@ jobs:
 
 
       ## create application.properties
-      - name: make application-dev.properties
+      - name: make application.properties
         run:
-          touch ./src/main/resources/application-dev.properties
+          touch ./src/main/resources/application.properties
         shell: bash
 
-      - name: deliver application-dev.properties
-        run: echo "${{ secrets.PROPERTIES }}" > ./src/main/resources/application-dev.properties
+      - name: deliver application.properties
+        run: echo "${{ secrets.PROPERTIES }}" > ./src/main/resources/application.properties
         shell: bash
 
 
