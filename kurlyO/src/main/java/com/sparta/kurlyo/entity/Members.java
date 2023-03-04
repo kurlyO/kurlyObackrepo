@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@Table(name = "member")
+@Table(name = "members")
 @NoArgsConstructor
 public class Members extends TimeStamped {
     @Id @Column
@@ -18,7 +18,7 @@ public class Members extends TimeStamped {
     private String account;
 
     @Column(nullable = false)
-    private String name;
+    private String memberName;
 
     @Column(nullable = false)
     private String password;
@@ -44,7 +44,7 @@ public class Members extends TimeStamped {
     public Members(String accout, String password, String name, String email, String address, String phone, String gender, String birth, UserRoleEnum role) {
         this.account = accout;
         this.password = password;
-        this.name = name;
+        this.memberName = name;
         this.address = address;
         this.email = email;
         this.phone = phone;

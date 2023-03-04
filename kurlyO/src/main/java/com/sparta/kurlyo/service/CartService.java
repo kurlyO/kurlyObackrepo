@@ -81,7 +81,7 @@ public class CartService {
         // isPlus == true : 카트의 상품 수량이 증가한다.
         // isPlust == false : 카트의 상품 수량이 감소한다.
 
-        Members member = membersRepository.findByName(userDetailsImpl.getUsername()).orElseThrow(
+        Members member = membersRepository.findByMemberName(userDetailsImpl.getUsername()).orElseThrow(
                 () -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다.")
         );
 
@@ -110,7 +110,7 @@ public class CartService {
             (Long cartId,
              UserDetailsImpl userDetailsImpl)
     {
-        Members member = membersRepository.findByName(userDetailsImpl.getUsername()).orElseThrow(
+        Members member = membersRepository.findByMemberName(userDetailsImpl.getUsername()).orElseThrow(
                 () -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다.")
         );
 

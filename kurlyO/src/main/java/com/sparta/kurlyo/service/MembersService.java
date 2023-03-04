@@ -92,7 +92,7 @@ public class MembersService {
         String token = jwtUtil.createToken(member.get().getAccount(), member.get().getRole());
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);
 
-        LoginResponseDto loginResponseDto = new LoginResponseDto(member.get().getName(), token);
+        LoginResponseDto loginResponseDto = new LoginResponseDto(member.get().getMemberName(), token);
         return new Response().toResponseEntity(LOGIN_SUCCESS, loginResponseDto);
 
     }
