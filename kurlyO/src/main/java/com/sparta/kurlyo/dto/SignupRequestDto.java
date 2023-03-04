@@ -15,7 +15,7 @@ public class SignupRequestDto {
     @Size(min=4, max=10, message = "4 ~ 10길이의 소문자, 숫자만 가능합니다.")
     private String account;
 
-    @Pattern(regexp = "(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{8,15}", message = "비밀번호는 영문 대,소문자와 숫자, 특수기호가 적어도 1개 이상씩 포함된 8자 ~ 15자의 비밀번호여야 합니다.")
+//    @Pattern(regexp = "(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{8,15}", message = "비밀번호는 영문 대,소문자와 숫자, 특수기호가 적어도 1개 이상씩 포함된 8자 ~ 15자의 비밀번호여야 합니다.")
     private String password;
 
     @NotNull(message = "이름은 공백일 수 없습니다.")

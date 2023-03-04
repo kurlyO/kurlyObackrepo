@@ -45,7 +45,8 @@ public class GoodsService {
     @Transactional(readOnly = true)
     public ResponseDto<List<GoodsListResponseDto>> getCategoriesList() {
 //    public ResponseDto<List<GoodsListResponseDto>> getCategoriesList(int page, int size, String sortBy) {
-        Sort sort = Sort.by(Sort.Direction.DESC, "createdAt");
+        String test = "test1";
+        Sort sort = Sort.by(Sort.Direction.DESC, "create_at");
 //        Sort sort = Sort.by(Sort.Direction.DESC, sortBy);
         Pageable pageable = PageRequest.of(1, 99, sort);
         Page<Goods> goodsPage = goodsRepository.findAll(pageable);
