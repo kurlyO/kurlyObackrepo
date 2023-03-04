@@ -20,7 +20,6 @@ import static com.sparta.kurlyo.dto.ExceptionMessage.*;
 @Service
 @RequiredArgsConstructor
 public class MembersService {
-
     private final MembersRepository membersRepository;
     private final JwtUtil jwtUtil;
 

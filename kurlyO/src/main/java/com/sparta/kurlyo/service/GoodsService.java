@@ -3,14 +3,16 @@ package com.sparta.kurlyo.service;
 import com.sparta.kurlyo.dto.GoodsListResponseDto;
 import com.sparta.kurlyo.dto.GoodsRequestDto;
 import com.sparta.kurlyo.dto.GoodsResponseDto;
+import com.sparta.kurlyo.dto.Response;
+import com.sparta.kurlyo.dto.SuccessMessage;
 import com.sparta.kurlyo.dto.ResponseDto;
 import com.sparta.kurlyo.entity.Category;
 import com.sparta.kurlyo.entity.Goods;
-import com.sparta.kurlyo.entity.Members;
 import com.sparta.kurlyo.repository.CategoryRepository;
 import com.sparta.kurlyo.repository.GoodsRepository;
 import com.sparta.kurlyo.s3.S3Uploader;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -32,8 +34,9 @@ public class GoodsService {
 
 
     @Transactional(readOnly = true)
-    public GoodsResponseDto getDetails(long goodsId) {
-        return new GoodsResponseDto(getGoods(goodsId));
+    public ResponseEntity<Response> getDetails(long goodsId) {
+        return new Response().toResponseEntity(SuccessMessage.GOODS_DETAIL_SUCCESS,
+                new GoodsResponseDto(getGoods(goodsId)));
     }
 
     private Goods getGoods(long goodsId) {

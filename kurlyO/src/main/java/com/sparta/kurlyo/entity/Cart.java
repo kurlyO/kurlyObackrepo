@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Cart {
+public class Cart extends TimeStamped {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)

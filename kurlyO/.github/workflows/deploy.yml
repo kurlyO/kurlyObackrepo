@@ -9,7 +9,8 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: [ "develop" ]
+    branches:
+      - develop
 
 permissions:
   contents: read
@@ -27,6 +28,6 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
       - name: Build with Gradle
-        uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+        uses: gradle/gradle-build-action@0d13054264b0bb894ded474f08ebb30921341cee
         with:
-          arguments: build
+          arguments: clean build
