@@ -7,6 +7,7 @@ import javax.persistence.*;
 
 @Entity
 @Getter
+@Table(name = "member")
 @NoArgsConstructor
 public class Members extends TimeStamped {
     @Id @Column
