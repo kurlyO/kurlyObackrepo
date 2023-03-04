@@ -3,10 +3,12 @@ package com.sparta.kurlyo.controller;
 import com.sparta.kurlyo.dto.CartRequestDto;
 import com.sparta.kurlyo.dto.CartResponseDto;
 import com.sparta.kurlyo.dto.CartWholeResponseDto;
+import com.sparta.kurlyo.dto.Response;
 import com.sparta.kurlyo.entity.Members;
 import com.sparta.kurlyo.security.UserDetailsImpl;
 import com.sparta.kurlyo.service.CartService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,8 +20,8 @@ public class CartController {
     private final CartService cartService;
 
     @PostMapping("/cart/{goodsId}")
-    public String addCart(@PathVariable long goodsId,
-                        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<Response> addCart(@PathVariable long goodsId,
+                                                @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return cartService.addCart(goodsId, userDetails.getUsername());
     }
 
