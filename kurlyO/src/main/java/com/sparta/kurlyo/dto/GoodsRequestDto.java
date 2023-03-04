@@ -12,7 +12,6 @@ public class GoodsRequestDto {
     private String goodsName;
     private int price;
     private String summary;
-    private Category category;
-    @Enumerated(EnumType.STRING)
-    private Packaging packaging;
+    private String category;
+    private String packaging;
 }

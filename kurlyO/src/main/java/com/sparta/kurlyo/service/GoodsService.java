@@ -4,8 +4,10 @@ import com.sparta.kurlyo.dto.GoodsListResponseDto;
 import com.sparta.kurlyo.dto.GoodsRequestDto;
 import com.sparta.kurlyo.dto.GoodsResponseDto;
 import com.sparta.kurlyo.dto.ResponseDto;
+import com.sparta.kurlyo.entity.Category;
 import com.sparta.kurlyo.entity.Goods;
 import com.sparta.kurlyo.entity.Members;
+import com.sparta.kurlyo.repository.CategoryRepository;
 import com.sparta.kurlyo.repository.GoodsRepository;
 import com.sparta.kurlyo.s3.S3Uploader;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GoodsService {
     private final GoodsRepository goodsRepository;
+    private final CategoryRepository categoryRepository;
     private final S3Uploader s3Uploader;
 
 
@@ -56,7 +59,8 @@ public class GoodsService {
     @Transactional
     public ResponseDto<Boolean> create(GoodsRequestDto goodsRequestDto, MultipartFile multipartFile) throws IOException {
         String imageUrl = s3Uploader.uploadFiles(multipartFile, "images");
-        goodsRepository.save(new Goods(goodsRequestDto, imageUrl));
+        Category category = categoryRepository.findByName(goodsRequestDto.getCategory());
+        goodsRepository.save(new Goods(goodsRequestDto, imageUrl, category));
         return ResponseDto.success(null);
     }
 }
