@@ -2,8 +2,6 @@ package com.sparta.kurlyo.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 
@@ -34,10 +32,12 @@ public class Cart extends TimeStamped {
     }
 
     public void addAmount() {
+
         this.amount += 1;
     }
 
     public void update(int amount){
+
         this.amount += amount;
     }
 }

@@ -23,6 +23,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+import static com.sparta.kurlyo.dto.ExceptionMessage.AMOUNT_OVER_COUNT;
+import static com.sparta.kurlyo.dto.ExceptionMessage.AMOUNT_UNDER_COUNT;
+
 @Service
 @RequiredArgsConstructor
 public class CartService {
@@ -82,7 +85,7 @@ public class CartService {
         // isPlus == true : 카트의 상품 수량이 증가한다.
         // isPlust == false : 카트의 상품 수량이 감소한다.
 
-        Members member = membersRepository.findByMemberName(userDetailsImpl.getUsername()).orElseThrow(
+        Members member = membersRepository.findByAccount(userDetailsImpl.getUsername()).orElseThrow(
                 () -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다.")
         );
 
@@ -95,12 +98,20 @@ public class CartService {
             throw new AccessDeniedException("권한이 없습니다.");
         }
 
+
         // isPlus == true : cart.amount += 1
         // isPlus == false : cart.amount -= 1
-        if (requestDto.isPlus()) {
+        if (requestDto.getIsPlus()) {
             cart.update(1);
         } else {
             cart.update(-1);
+        }
+
+        if(cart.getAmount() <= 0) {
+            throw new CustomException(AMOUNT_UNDER_COUNT);
+        }
+        if(cart.getGoods().getCount() < cart.getAmount()) {
+            throw new CustomException(AMOUNT_OVER_COUNT);
         }
 
         return CartResponseDto.of(cart);
