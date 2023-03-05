@@ -96,4 +96,18 @@ public class MembersService {
         return new Response().toResponseEntity(LOGIN_SUCCESS, loginResponseDto);
 
     }
+
+    public ResponseDto<Boolean> accountCheck(String account) {
+        if (membersRepository.findByAccount(account).isPresent()) {
+            return ResponseDto.fail();
+        }
+        return ResponseDto.success(null);
+    }
+
+    public ResponseDto<Boolean> emailCheck(String email) {
+        if (membersRepository.findByEmail(email).isPresent()) {
+            return ResponseDto.fail();
+        }
+        return ResponseDto.success(null);
+    }
 }

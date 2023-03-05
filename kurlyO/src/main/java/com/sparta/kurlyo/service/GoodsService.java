@@ -56,6 +56,7 @@ public class GoodsService {
     }
 
     //상품 전체 리스트(현재 페이징 지정값 전달 /프론트 진행 상황에 맞춰 변경 예정)
+    //작성일자/수정일자 dto 추가해서 넣을지 결정 필요
     @Transactional(readOnly = true)
     public ResponseDto<List<GoodsListResponseDto>> getCategoriesList() {
 //    public ResponseDto<List<GoodsListResponseDto>> getCategoriesList(int page, int size, String sortBy) {
