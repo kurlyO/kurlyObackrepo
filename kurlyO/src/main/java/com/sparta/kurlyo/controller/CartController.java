@@ -44,7 +44,7 @@ public class CartController {
         return cartService.updateGoodsCart(cartId, requestDto, userDetails.getMember());
     }
 
-    @DeleteMapping("/{cartId}")
+    @DeleteMapping("/cart/{cartId}")
     public ResponseEntity<Response> deleteComment(@PathVariable Long cartId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return cartService.deleteGoodsCart(cartId,userDetails.getMember());
     }
