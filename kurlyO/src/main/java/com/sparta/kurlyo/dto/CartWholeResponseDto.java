@@ -2,12 +2,14 @@ package com.sparta.kurlyo.dto;
 
 import com.sparta.kurlyo.entity.Cart;
 import com.sparta.kurlyo.entity.Packaging;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.lang.reflect.Member;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
 @NoArgsConstructor
 public class CartWholeResponseDto {
     private List<CartResponseDto> cold = new ArrayList<>();

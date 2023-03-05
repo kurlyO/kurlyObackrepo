@@ -14,6 +14,7 @@ public class GoodsResponseDto {
     private String image;
     private String packaging;
     private String category;
+    private Integer count;
 
     public GoodsResponseDto(Goods goods) {
         this.goodsId = goods.getId();
@@ -21,6 +22,7 @@ public class GoodsResponseDto {
         this.price = goods.getPrice();
         this.summary = goods.getSummary();
         this.image = goods.getImage();
+        this.count = goods.getCount();
         this.packaging = goods.getPackaging().name();
         this.category = goods.getCategory().getName();
     }
