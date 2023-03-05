@@ -22,6 +22,9 @@ public enum ExceptionMessage {
     GOODS_COUNT_INVALID_RANGE(BAD_REQUEST,"상품의 최대 수량을 초과하였습니다."),
     IMAGE_INVALID(BAD_REQUEST,"이미지가 잘못 되었습니다."),
 
+    AMOUNT_OVER_COUNT(BAD_REQUEST,"재고수량을 초과하였습니다."),
+    AMOUNT_UNDER_COUNT(BAD_REQUEST,"수량은 1 이상이여야 합니다."),
+
     /* 401 UNAUTHORIZED : 인증되지 않은 사용자 */
     UNAUTHORIZED_MEMBER(UNAUTHORIZED, "현재 내 계정 정보가 존재하지 않습니다"),
     UNAUTHORIZED_ADMIN(UNAUTHORIZED, "관리자가 아닙니다."),

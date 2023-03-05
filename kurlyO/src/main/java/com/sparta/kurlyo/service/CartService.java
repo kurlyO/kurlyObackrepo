@@ -1,12 +1,19 @@
 package com.sparta.kurlyo.service;
 
-import com.sparta.kurlyo.dto.*;
+import com.sparta.kurlyo.dto.CartRequestDto;
+import com.sparta.kurlyo.dto.CartResponseDto;
+import com.sparta.kurlyo.dto.CartWholeResponseDto;
+import com.sparta.kurlyo.dto.CustomException;
+import com.sparta.kurlyo.dto.ExceptionMessage;
+import com.sparta.kurlyo.dto.Response;
+import com.sparta.kurlyo.dto.SuccessMessage;
 import com.sparta.kurlyo.entity.Cart;
 import com.sparta.kurlyo.entity.Goods;
 import com.sparta.kurlyo.entity.Members;
 import com.sparta.kurlyo.repository.CartRepository;
 import com.sparta.kurlyo.repository.GoodsRepository;
 import com.sparta.kurlyo.repository.MembersRepository;
+import com.sparta.kurlyo.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-
-import static com.sparta.kurlyo.dto.ExceptionMessage.*;
 
 @Service
 @RequiredArgsConstructor
@@ -41,7 +46,7 @@ public class CartService {
 
     private Goods getGoods(long goodsId) {
         return goodsRepository.findById(goodsId).orElseThrow(
-                () -> new CustomException(GOODS_NOT_FOUND)
+                () -> new CustomException(ExceptionMessage.GOODS_NOT_FOUND)
         );
     }
 
@@ -87,10 +92,17 @@ public class CartService {
 
         // isPlus == true : cart.amount += 1
         // isPlus == false : cart.amount -= 1
-        if (requestDto.isPlus()) {
+        if (requestDto.getIsPlus()) {
             cart.update(1);
         } else {
             cart.update(-1);
+        }
+
+        if(cart.getAmount() <= 0) {
+            throw new CustomException(AMOUNT_UNDER_COUNT);
+        }
+        if(cart.getGoods().getCount() < cart.getAmount()) {
+            throw new CustomException(AMOUNT_OVER_COUNT);
         }
 
         return CartResponseDto.of(cart);
@@ -108,6 +120,7 @@ public class CartService {
         if (!member.getMemberName().equals(cart.getMembers().getMemberName())) {
             throw new CustomException(CART_GOODS_DELETE_FORBIDDEN);
         }
+
         cartRepository.delete(cart);
         return new Response().toResponseEntity(SuccessMessage.DELETE_CART_GOODS_SUCCESS);
     }
