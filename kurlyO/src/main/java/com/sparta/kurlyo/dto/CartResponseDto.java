@@ -19,7 +19,12 @@ public class CartResponseDto {
     private LocalDateTime modifiedAt;
 
     public CartResponseDto(Cart cart) {
-        new CartResponseDto(cart);
+        this.image = cart.getGoods().getImage();
+        this.goodsName = cart.getGoods().getGoodsName();
+        this.price = cart.getGoods().getPrice();
+        this.amount = cart.getAmount();
+        this.createdAt = cart.getCreateAt();
+        this.modifiedAt = cart.getModifiedAt();
     }
 
 

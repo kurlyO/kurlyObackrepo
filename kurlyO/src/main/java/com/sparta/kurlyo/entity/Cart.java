@@ -1,8 +1,9 @@
 package com.sparta.kurlyo.entity;
 
-import com.sparta.kurlyo.dto.CartRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 
@@ -20,14 +21,14 @@ public class Cart extends TimeStamped {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "members_id", nullable = false)
-    private Members member;
+    private Members members;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER) //N+1 발생 처리해야함
     @JoinColumn(name = "goods_id", nullable = false)
     private Goods goods;
 
-    public Cart(Members member, Goods goods) {
-        this.member = member;
+    public Cart(Members members, Goods goods) {
+        this.members = members;
         this.goods = goods;
         this.amount = 1;
     }

@@ -34,7 +34,7 @@ public class CartService {
     @Transactional
     public ResponseEntity<Response> addCart(long goodsId, String username) {
         Members member = getMember(username);
-        Optional<Cart> cart = cartRepository.findByGoods_IdAndMember_Account(goodsId, username);
+        Optional<Cart> cart = cartRepository.findByGoods_IdAndMembers_Account(goodsId, username);
         if (cart.isPresent()) {
             cart.get().addAmount();
         } else {
@@ -62,7 +62,8 @@ public class CartService {
         // 장바구니 목록을 가져오는 것
         CartWholeResponseDto dto = new CartWholeResponseDto();
         // 특정 사용자의 장바구니 목록을 가지고 옴
-        List<Cart> cartList = cartRepository.findByMember(member);
+        List<Cart> cartList = cartRepository.findCartsByMembers_Id(member.getId());
+        String test = "test";
         for (Cart cart : cartList){
             dto.addGoodsCart(cart);
         }
@@ -90,7 +91,7 @@ public class CartService {
         );
 
         // 사용자의 장바구니 확인
-        if (member.getId() != cart.getMember().getId()) {
+        if (member.getId() != cart.getMembers().getId()) {
             throw new AccessDeniedException("권한이 없습니다.");
         }
 
@@ -118,7 +119,7 @@ public class CartService {
                 () -> new IllegalArgumentException("해당 장바구니가 존재하지 않습니다.")
         );
 
-        if (member.getId() != cart.getMember().getId()) {
+        if (member.getId() != cart.getMembers().getId()) {
             throw new AccessDeniedException("권한이 없습니다.");
         }
 
