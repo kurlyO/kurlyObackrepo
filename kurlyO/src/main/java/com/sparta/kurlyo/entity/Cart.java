@@ -17,7 +17,7 @@ public class Cart extends TimeStamped {
     private Long id;
 
     @Column(nullable = false)
-    private int amount;
+    private Integer amount;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "members_id", nullable = false)

@@ -28,7 +28,8 @@ public enum SuccessMessage {
     COMMENT_POST_SUCCESS(HttpStatus.CREATED,"댓글 작성 완료"),
     COMMENT_DELETE_SUCCESS(HttpStatus.CREATED, "댓글 삭제 완료"),
     LIKE_POST_SUCCESS(HttpStatus.CREATED, "좋아요 등록 완료"),
-    LIKE_DELETE_SUCCESS(HttpStatus.CREATED, "좋아요 취소 완료");
+    LIKE_DELETE_SUCCESS(HttpStatus.CREATED, "좋아요 취소 완료"),
+    BUY_SUCCESS(HttpStatus.OK,"구매 완료되었습니다.");
 
     private final HttpStatus httpStatus;
     private final String detail;

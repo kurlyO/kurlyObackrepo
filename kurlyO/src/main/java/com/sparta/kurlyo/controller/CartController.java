@@ -48,5 +48,9 @@ public class CartController {
     public ResponseEntity<Response> deleteComment(@PathVariable Long cartId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return cartService.deleteGoodsCart(cartId,userDetails.getMember());
     }
+    @PostMapping("/cart/bought/{cartId}")
+    public ResponseEntity<Response> BuyComment(@PathVariable Long cartId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return cartService.BuyGoodsCart(cartId,userDetails.getMember());
+    }
 
 }

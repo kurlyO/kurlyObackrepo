@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-import static com.sparta.kurlyo.dto.ExceptionMessage.CART_GOODS_DELETE_FORBIDDEN;
+import static com.sparta.kurlyo.dto.ExceptionMessage.*;
 
 @Service
 @RequiredArgsConstructor
@@ -41,7 +41,7 @@ public class CartService {
 
     private Goods getGoods(long goodsId) {
         return goodsRepository.findById(goodsId).orElseThrow(
-                () -> new CustomException(ExceptionMessage.GOODS_NOT_FOUND)
+                () -> new CustomException(GOODS_NOT_FOUND)
         );
     }
 
@@ -101,9 +101,8 @@ public class CartService {
     public ResponseEntity<Response> deleteGoodsCart
             (Long cartId,
              Members member) {
-
         Cart cart = cartRepository.findById(cartId).orElseThrow(
-                () -> new IllegalArgumentException("해당 장바구니가 존재하지 않습니다.")
+                () -> new CustomException(CART_NOT_FOUND)
         );
 
         if (!member.getMemberName().equals(cart.getMembers().getMemberName())) {
@@ -111,6 +110,23 @@ public class CartService {
         }
         cartRepository.delete(cart);
         return new Response().toResponseEntity(SuccessMessage.DELETE_CART_GOODS_SUCCESS);
+    }
+
+    @Transactional
+    public ResponseEntity<Response> BuyGoodsCart(Long cartId, Members member) {
+        Cart cart = cartRepository.findById(cartId).orElseThrow(
+                () -> new CustomException(CART_NOT_FOUND)
+        );
+        Goods goods = goodsRepository.findById(cart.getGoods().getId()).orElseThrow(
+                () -> new CustomException(GOODS_NOT_FOUND)
+        );
+        if (!(cart.getAmount()<=goods.getCount())){
+            return new Response().toAllExceptionResponseEntity(GOODS_COUNT_INVALID_RANGE, "최대 수량은 " + goods.getCount() + " 입니다.");
+        }
+        // count가 0일 때 생각해보기 //PUT 메서드 변경할지 고려해보기.
+        // amount가 0일 때 삭제 처리 고려
+        goodsRepository.updateGoodsCount(goods.getId(),goods.getCount()-cart.getAmount());
+        return new Response().toResponseEntity(SuccessMessage.BUY_SUCCESS);
     }
 }
 //
