@@ -1,19 +1,12 @@
 package com.sparta.kurlyo.service;
 
-import com.sparta.kurlyo.dto.CartRequestDto;
-import com.sparta.kurlyo.dto.CartResponseDto;
-import com.sparta.kurlyo.dto.CartWholeResponseDto;
-import com.sparta.kurlyo.dto.CustomException;
-import com.sparta.kurlyo.dto.ExceptionMessage;
-import com.sparta.kurlyo.dto.Response;
-import com.sparta.kurlyo.dto.SuccessMessage;
+import com.sparta.kurlyo.dto.*;
 import com.sparta.kurlyo.entity.Cart;
 import com.sparta.kurlyo.entity.Goods;
 import com.sparta.kurlyo.entity.Members;
 import com.sparta.kurlyo.repository.CartRepository;
 import com.sparta.kurlyo.repository.GoodsRepository;
 import com.sparta.kurlyo.repository.MembersRepository;
-import com.sparta.kurlyo.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.http.ResponseEntity;
@@ -23,8 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-import static com.sparta.kurlyo.dto.ExceptionMessage.AMOUNT_OVER_COUNT;
-import static com.sparta.kurlyo.dto.ExceptionMessage.AMOUNT_UNDER_COUNT;
+import static com.sparta.kurlyo.dto.ExceptionMessage.*;
+
 
 @Service
 @RequiredArgsConstructor
@@ -49,7 +42,7 @@ public class CartService {
 
     private Goods getGoods(long goodsId) {
         return goodsRepository.findById(goodsId).orElseThrow(
-                () -> new CustomException(ExceptionMessage.GOODS_NOT_FOUND)
+                () -> new CustomException(GOODS_NOT_FOUND)
         );
     }
 
@@ -61,13 +54,13 @@ public class CartService {
 
 
     @Transactional(readOnly = true)
-    public CartWholeResponseDto getCart(Members member){
+    public CartWholeResponseDto getCart(Members member) {
         // 장바구니 목록을 가져오는 것
         CartWholeResponseDto dto = new CartWholeResponseDto();
         // 특정 사용자의 장바구니 목록을 가지고 옴
         List<Cart> cartList = cartRepository.findCartsByMembers_Id(member.getId());
         String test = "test";
-        for (Cart cart : cartList){
+        for (Cart cart : cartList) {
             dto.addGoodsCart(cart);
         }
         return dto;
@@ -77,17 +70,13 @@ public class CartService {
     public CartResponseDto updateGoodsCart
             (Long cartId,
              CartRequestDto requestDto,
-             UserDetailsImpl userDetailsImpl)
-    {
+             Members member) {
 
         // 기능
         // 카트의 상품을 추가하기 위해서
         // isPlus == true : 카트의 상품 수량이 증가한다.
         // isPlust == false : 카트의 상품 수량이 감소한다.
 
-        Members member = membersRepository.findByAccount(userDetailsImpl.getUsername()).orElseThrow(
-                () -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다.")
-        );
 
         Cart cart = cartRepository.findById(cartId).orElseThrow(
                 () -> new IllegalArgumentException("해당 장바구니가 존재하지 않습니다.")
@@ -117,24 +106,37 @@ public class CartService {
         return CartResponseDto.of(cart);
     }
 
+    //오류 문제 객체끼리 비교하셨습니다 객체 == 객체
     @Transactional
-    public void deleteGoodsCart
+    public ResponseEntity<Response> deleteGoodsCart
             (Long cartId,
-             UserDetailsImpl userDetailsImpl)
-    {
-        Members member = membersRepository.findByMemberName(userDetailsImpl.getUsername()).orElseThrow(
-                () -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다.")
-        );
-
+             Members member) {
         Cart cart = cartRepository.findById(cartId).orElseThrow(
-                () -> new IllegalArgumentException("해당 장바구니가 존재하지 않습니다.")
+                () -> new CustomException(CART_NOT_FOUND)
         );
 
-        if (member.getId() != cart.getMembers().getId()) {
-            throw new AccessDeniedException("권한이 없습니다.");
+        if (!member.getMemberName().equals(cart.getMembers().getMemberName())) {
+            throw new CustomException(CART_GOODS_DELETE_FORBIDDEN);
         }
-
         cartRepository.delete(cart);
+        return new Response().toResponseEntity(SuccessMessage.DELETE_CART_GOODS_SUCCESS);
+    }
+
+    @Transactional
+    public ResponseEntity<Response> BuyGoodsCart(Long cartId, Members member) {
+        Cart cart = cartRepository.findById(cartId).orElseThrow(
+                () -> new CustomException(CART_NOT_FOUND)
+        );
+        Goods goods = goodsRepository.findById(cart.getGoods().getId()).orElseThrow(
+                () -> new CustomException(GOODS_NOT_FOUND)
+        );
+        if (!(cart.getAmount()<=goods.getCount())){
+            return new Response().toAllExceptionResponseEntity(GOODS_COUNT_INVALID_RANGE, "최대 수량은 " + goods.getCount() + " 입니다.");
+        }
+        // count가 0일 때 생각해보기 //PUT 메서드 변경할지 고려해보기.
+        // amount가 0일 때 삭제 처리 고려
+        goodsRepository.updateGoodsCount(goods.getId(),goods.getCount()-cart.getAmount());
+        return new Response().toResponseEntity(SuccessMessage.BUY_SUCCESS);
     }
 }
 //

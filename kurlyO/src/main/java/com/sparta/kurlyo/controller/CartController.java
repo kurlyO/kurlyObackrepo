@@ -1,9 +1,6 @@
 package com.sparta.kurlyo.controller;
 
-import com.sparta.kurlyo.dto.CartRequestDto;
-import com.sparta.kurlyo.dto.CartResponseDto;
-import com.sparta.kurlyo.dto.CartWholeResponseDto;
-import com.sparta.kurlyo.dto.Response;
+import com.sparta.kurlyo.dto.*;
 import com.sparta.kurlyo.entity.Members;
 import com.sparta.kurlyo.security.UserDetailsImpl;
 import com.sparta.kurlyo.service.CartService;
@@ -44,12 +41,16 @@ public class CartController {
     ) {
 
 
-        return cartService.updateGoodsCart(cartId, requestDto, userDetails);
+        return cartService.updateGoodsCart(cartId, requestDto, userDetails.getMember());
     }
 
-    @DeleteMapping("/{cartId}")
-    public void deleteComment(@PathVariable Long cartId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        cartService.deleteGoodsCart(cartId,userDetails);
+    @DeleteMapping("/cart/{cartId}")
+    public ResponseEntity<Response> deleteComment(@PathVariable Long cartId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return cartService.deleteGoodsCart(cartId,userDetails.getMember());
+    }
+    @PostMapping("/cart/bought/{cartId}")
+    public ResponseEntity<Response> BuyComment(@PathVariable Long cartId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return cartService.BuyGoodsCart(cartId,userDetails.getMember());
     }
 
 }
