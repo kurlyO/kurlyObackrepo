@@ -13,7 +13,6 @@ import com.sparta.kurlyo.entity.Members;
 import com.sparta.kurlyo.repository.CartRepository;
 import com.sparta.kurlyo.repository.GoodsRepository;
 import com.sparta.kurlyo.repository.MembersRepository;
-import com.sparta.kurlyo.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+
+import static com.sparta.kurlyo.dto.ExceptionMessage.*;
 
 @Service
 @RequiredArgsConstructor
