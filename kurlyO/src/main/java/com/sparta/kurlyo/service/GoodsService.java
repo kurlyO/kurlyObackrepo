@@ -1,11 +1,6 @@
 package com.sparta.kurlyo.service;
 
-import com.sparta.kurlyo.dto.GoodsListResponseDto;
-import com.sparta.kurlyo.dto.GoodsRequestDto;
-import com.sparta.kurlyo.dto.GoodsResponseDto;
-import com.sparta.kurlyo.dto.Response;
-import com.sparta.kurlyo.dto.SuccessMessage;
-import com.sparta.kurlyo.dto.ResponseDto;
+import com.sparta.kurlyo.dto.*;
 import com.sparta.kurlyo.entity.Category;
 import com.sparta.kurlyo.entity.Goods;
 import com.sparta.kurlyo.repository.CategoryRepository;
@@ -25,6 +20,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.sparta.kurlyo.dto.ExceptionMessage.CARTEGORY_NOT_FOUND;
+import static com.sparta.kurlyo.dto.ExceptionMessage.CART_GOODS_DELETE_FORBIDDEN;
 
 @Slf4j
 @Service
@@ -58,7 +56,7 @@ public class GoodsService {
     //상품 전체 리스트(현재 페이징 지정값 전달 /프론트 진행 상황에 맞춰 변경 예정)
     //작성일자/수정일자 dto 추가해서 넣을지 결정 필요
     @Transactional(readOnly = true)
-    public ResponseDto<List<GoodsListResponseDto>> getCategoriesList() {
+    public ResponseEntity<Response> getCategoriesList() {
 //    public ResponseDto<List<GoodsListResponseDto>> getCategoriesList(int page, int size, String sortBy) {
         Sort sort = Sort.by(Sort.Direction.DESC, "createAt");
 //        Sort sort = Sort.by(Sort.Direction.DESC, sortBy);
@@ -68,21 +66,23 @@ public class GoodsService {
         for (Goods goodsGet : goodsPage) {
             goodsList.add(GoodsListResponseDto.of(goodsGet));
         }
-        return ResponseDto.success(goodsList);
+        return new Response().toResponseEntity(SuccessMessage.GOODS_ALL_CATEGORY_LIST_SUCCESS,
+                goodsList);
     }
 
     @Transactional
-    public ResponseDto<List<GoodsListResponseDto>> getSummaryList(String categoryName) {
+    public ResponseEntity<Response> getSummaryList(String categoryName) {
         Sort sort = Sort.by(Sort.Direction.DESC, "createAt");
         Pageable pageable = PageRequest.of(0, 99, sort);
-        Page<Goods> goodsCategoryPage = goodsRepository.findAllByCategoryName(categoryName, pageable); //Exception 여부 체크 필요
+        Page<Goods> goodsCategoryPage = goodsRepository.findAllByCategoryName(categoryName, pageable);
         if (goodsCategoryPage.isEmpty()){
-            log.info("카테고리 항목이 없을 경우 Exception 발생");
+            throw new CustomException(CARTEGORY_NOT_FOUND);
         }
         List<GoodsListResponseDto> goodsCategoryList = new ArrayList<>();
         for (Goods goods : goodsCategoryPage) {
             goodsCategoryList.add(GoodsListResponseDto.of(goods));
         }
-        return ResponseDto.success(goodsCategoryList);
+        return new Response().toResponseEntity(SuccessMessage.GOODS_CATEGORY_LIST_SUCCESS,
+                goodsCategoryList);
     }
 }

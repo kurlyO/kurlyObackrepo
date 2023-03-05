@@ -30,12 +30,12 @@ public class GoodsController {
 
     //카테고리 전체 리스트
     @GetMapping("/categories")
-    public ResponseDto<List<GoodsListResponseDto>> getCategoriesList() {
+    public ResponseEntity<Response> getCategoriesList() {
         return goodsService.getCategoriesList();
     }
     //카테고리 구분 리스트
     @GetMapping("/categories/{categoryName}")
-    public ResponseDto<List<GoodsListResponseDto>> getCategoriesList(@PathVariable String categoryName) {
+    public ResponseEntity<Response> getCategoriesList(@PathVariable String categoryName) {
         return goodsService.getSummaryList(categoryName);
     }
 //    @Secured(value = UserRoleEnum.ADMIN) 권한 접근
