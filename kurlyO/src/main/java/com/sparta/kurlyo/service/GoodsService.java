@@ -12,6 +12,7 @@ import com.sparta.kurlyo.repository.CategoryRepository;
 import com.sparta.kurlyo.repository.GoodsRepository;
 import com.sparta.kurlyo.s3.S3Uploader;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,6 +26,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class GoodsService {
@@ -32,7 +34,7 @@ public class GoodsService {
     private final CategoryRepository categoryRepository;
     private final S3Uploader s3Uploader;
 
-
+    //상세 페이지
     @Transactional(readOnly = true)
     public ResponseEntity<Response> getDetails(long goodsId) {
         return new Response().toResponseEntity(SuccessMessage.GOODS_DETAIL_SUCCESS,
@@ -44,22 +46,7 @@ public class GoodsService {
                 () -> new IllegalArgumentException("해당 상품이 존재하지 않습니다.")
         );
     }
-
-    @Transactional(readOnly = true)
-    public ResponseDto<List<GoodsListResponseDto>> getCategoriesList() {
-//    public ResponseDto<List<GoodsListResponseDto>> getCategoriesList(int page, int size, String sortBy) {
-        Sort sort = Sort.by(Sort.Direction.DESC, "createAt");
-//        Sort sort = Sort.by(Sort.Direction.DESC, sortBy);
-        Pageable pageable = PageRequest.of(0, 99, sort);
-        Page<Goods> goodsPage = goodsRepository.findAll(pageable);
-
-//        List<Goods> goods = goodsRepository.findAll(); //test용
-        List<GoodsListResponseDto> goodsList = new ArrayList<>();
-        for (Goods goodsGet : goodsPage) {
-            goodsList.add(GoodsListResponseDto.of(goodsGet));
-        }
-        return ResponseDto.success(goodsList);
-    }
+    //상품 등록 페이지
     @Transactional
     public ResponseDto<Boolean> create(GoodsRequestDto goodsRequestDto, MultipartFile multipartFile) throws IOException {
         String imageUrl = s3Uploader.uploadFiles(multipartFile, "images");
@@ -68,4 +55,33 @@ public class GoodsService {
         return ResponseDto.success(null);
     }
 
+    //상품 전체 리스트(현재 페이징 지정값 전달 /프론트 진행 상황에 맞춰 변경 예정)
+    @Transactional(readOnly = true)
+    public ResponseDto<List<GoodsListResponseDto>> getCategoriesList() {
+//    public ResponseDto<List<GoodsListResponseDto>> getCategoriesList(int page, int size, String sortBy) {
+        Sort sort = Sort.by(Sort.Direction.DESC, "createAt");
+//        Sort sort = Sort.by(Sort.Direction.DESC, sortBy);
+        Pageable pageable = PageRequest.of(0, 99, sort);
+        Page<Goods> goodsPage = goodsRepository.findAll(pageable);
+        List<GoodsListResponseDto> goodsList = new ArrayList<>();
+        for (Goods goodsGet : goodsPage) {
+            goodsList.add(GoodsListResponseDto.of(goodsGet));
+        }
+        return ResponseDto.success(goodsList);
+    }
+
+    @Transactional
+    public ResponseDto<List<GoodsListResponseDto>> getSummaryList(String categoryName) {
+        Sort sort = Sort.by(Sort.Direction.DESC, "createAt");
+        Pageable pageable = PageRequest.of(0, 99, sort);
+        Page<Goods> goodsCategoryPage = goodsRepository.findAllByCategoryName(categoryName, pageable); //Exception 여부 체크 필요
+        if (goodsCategoryPage.isEmpty()){
+            log.info("카테고리 항목이 없을 경우 Exception 발생");
+        }
+        List<GoodsListResponseDto> goodsCategoryList = new ArrayList<>();
+        for (Goods goods : goodsCategoryPage) {
+            goodsCategoryList.add(GoodsListResponseDto.of(goods));
+        }
+        return ResponseDto.success(goodsCategoryList);
+    }
 }
