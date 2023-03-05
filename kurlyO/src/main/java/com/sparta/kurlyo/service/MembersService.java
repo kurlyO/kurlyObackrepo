@@ -16,6 +16,7 @@ import java.util.Optional;
 
 import static com.sparta.kurlyo.dto.SuccessMessage.*;
 import static com.sparta.kurlyo.dto.ExceptionMessage.*;
+import static org.springframework.http.HttpStatus.CONFLICT;
 
 @Service
 @RequiredArgsConstructor
@@ -97,17 +98,17 @@ public class MembersService {
 
     }
 
-    public ResponseDto<Boolean> accountCheck(String account) {
+    public ResponseEntity<Response>accountCheck(String account) {
         if (membersRepository.findByAccount(account).isPresent()) {
-            return ResponseDto.fail();
+            return new Response().toAllExceptionResponseEntity(DUPLICATE_USER, account);
         }
-        return ResponseDto.success(null);
+        return new Response().toResponseEntity(SuccessMessage.ACOUNT_CHECK_SUCCESS);
     }
 
-    public ResponseDto<Boolean> emailCheck(String email) {
+    public ResponseEntity<Response> emailCheck(String email) {
         if (membersRepository.findByEmail(email).isPresent()) {
-            return ResponseDto.fail();
+            return new Response().toAllExceptionResponseEntity(DUPLICATE_EMAIL, email);
         }
-        return ResponseDto.success(null);
+        return new Response().toResponseEntity(SuccessMessage.EMAIL_CHECK_SUCCESS);
     }
 }

@@ -29,11 +29,11 @@ public class MembersController {
         return membersService.login(loginRequestDto, response);
     }
     @GetMapping("/signup/accountCheck/{account}")
-    public ResponseDto<Boolean> accountCheck(@PathVariable String account) {
+    public ResponseEntity<Response> accountCheck(@PathVariable String account) {
         return membersService.accountCheck(account);
     }
     @GetMapping("/signup/emailCheck/{email}")
-    public ResponseDto<Boolean> emailCheck(@PathVariable String email) {
+    public ResponseEntity<Response> emailCheck(@PathVariable String email) {
         return membersService.emailCheck(email);
     }
 
