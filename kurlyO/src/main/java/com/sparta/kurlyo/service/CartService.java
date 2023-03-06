@@ -147,7 +147,8 @@ public class CartService {
         Goods goods = goodsRepository.findById(cart.getGoods().getId()).orElseThrow(
                 () -> new CustomException(GOODS_NOT_FOUND)
         );
-        if (cart.getMembers().getMemberName().equals(member.getMemberName())) {
+        String test = cart.getMembers().getAccount();
+        if (!cart.getMembers().getAccount().equals(member.getAccount())) {
             return new Response().toExceptionResponseEntity(CANNOT_CART_GOODS_BUY);
         }
         if (!(cart.getAmount() <= goods.getCount())) {
@@ -158,4 +159,3 @@ public class CartService {
         return new Response().toResponseEntity(BUY_SUCCESS);
     }
 }
-//
