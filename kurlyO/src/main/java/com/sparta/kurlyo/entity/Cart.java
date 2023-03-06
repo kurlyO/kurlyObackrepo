@@ -21,7 +21,7 @@ public class Cart extends TimeStamped {
     @JoinColumn(name = "members_id", nullable = false)
     private Members members;
 
-    @ManyToOne(fetch = FetchType.EAGER) //N+1 발생 처리해야함
+    @ManyToOne(fetch = FetchType.LAZY) //N+1 발생 처리해야함
     @JoinColumn(name = "goods_id", nullable = false)
     private Goods goods;
 
