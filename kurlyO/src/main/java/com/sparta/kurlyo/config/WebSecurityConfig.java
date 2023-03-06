@@ -17,6 +17,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
@@ -42,6 +43,11 @@ public class WebSecurityConfig {
                 .antMatchers(
                         "/v2/api-docs", "/swagger-resources/**", "/api-docs", "/swagger-ui/index.html", "/swagger-ui.html", "/webjars/**", "/swagger/**"   // swagger
                 )
+                .mvcMatchers("/api-docs")
+                .mvcMatchers("/docs/**")
+                .mvcMatchers("/version")
+                .mvcMatchers("/swagger-ui/**")
+                .mvcMatchers("/public")
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 
@@ -53,7 +59,8 @@ public class WebSecurityConfig {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.authorizeRequests().antMatchers("/api/member/**").permitAll()
-//                .antMatchers(HttpMethod.GET, "/board/**").permitAll()
+//                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll() //필요 여부 체크 필요
+//                .antMatchers(HttpMethod.GET, "/goods/**").permitAll()
                 .antMatchers("**").permitAll()
                 .anyRequest().authenticated()
                 // JWT 인증/인가를 사용하기 위한 설정
