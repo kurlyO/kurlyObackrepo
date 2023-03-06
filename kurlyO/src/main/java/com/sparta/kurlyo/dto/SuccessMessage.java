@@ -21,7 +21,7 @@ public enum SuccessMessage {
     DELETE_CART_GOODS_SUCCESS(HttpStatus.OK, "해당 상품을 장바구니에서 삭제하셨습니다."),
 
     BOARD_GET_SUCCESS(HttpStatus.OK,"게시물 랜덤 보기 완료"),
-    BOARD_POST_SUCCESS(HttpStatus.CREATED, "게시물 작성 완료"),
+    GOODS_POST_SUCCESS(HttpStatus.CREATED, "상품 등록 완료"),
     BOARD_PUT_SUCCESS(HttpStatus.CREATED,"게시물 수정 완료"),
     BOARD_DELETE_SUCCESS(HttpStatus.CREATED,"게시물 삭제 완료"),
     BOARD_MY_LIST_GET_SUCCESS(HttpStatus.OK,"나의 게시물 보기 완료"),

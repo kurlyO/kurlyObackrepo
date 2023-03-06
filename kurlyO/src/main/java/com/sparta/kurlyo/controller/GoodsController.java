@@ -50,7 +50,7 @@ public class GoodsController {
     }
 //    @Secured(value = UserRoleEnum.ADMIN) 권한 접근
     @PostMapping("/goods")
-    public ResponseDto<Boolean> createGoods(@RequestPart GoodsRequestDto goodsRequestDto, @RequestPart(value = "image") MultipartFile multipartFile) throws IOException {
+    public ResponseEntity<Response> createGoods(@RequestPart GoodsRequestDto goodsRequestDto, @RequestPart(value = "image") MultipartFile multipartFile) throws IOException {
         return goodsService.create(goodsRequestDto, multipartFile);
     }
 }

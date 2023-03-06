@@ -41,17 +41,20 @@ public class GoodsService {
 
     private Goods getGoods(long goodsId) {
         return goodsRepository.findById(goodsId).orElseThrow(
-                () -> new IllegalArgumentException("해당 상품이 존재하지 않습니다.")
+                () -> new CustomException(GOODS_NOT_FOUND)
         );
     }
 
     //상품 등록 페이지
     @Transactional
-    public ResponseDto<Boolean> create(GoodsRequestDto goodsRequestDto, MultipartFile multipartFile) throws IOException {
+    public ResponseEntity<Response> create(GoodsRequestDto goodsRequestDto, MultipartFile multipartFile) throws IOException {
+        if (goodsRepository.findByGoodsName(goodsRequestDto.getGoodsName().toString()).isPresent()){
+            return new Response().toAllExceptionResponseEntity(DUPLICATE_GOODS, goodsRequestDto.getGoodsName());
+        }
         String imageUrl = s3Uploader.uploadFiles(multipartFile, "images");
         Category category = categoryRepository.findByName(goodsRequestDto.getCategory());
         goodsRepository.save(new Goods(goodsRequestDto, imageUrl, category));
-        return ResponseDto.success(null);
+        return new Response().toResponseEntity(SuccessMessage.GOODS_POST_SUCCESS);
     }
 
     //상품 전체 리스트(현재 페이징 지정값 전달 /프론트 진행 상황에 맞춰 변경 예정)
