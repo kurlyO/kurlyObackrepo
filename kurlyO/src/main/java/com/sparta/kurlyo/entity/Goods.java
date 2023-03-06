@@ -23,6 +23,9 @@ public class Goods extends TimeStamped{
     @Column(nullable = false)
     private String goodsName;
 
+    @Column
+    private Integer count;
+
     @Column(nullable = false)
     private Integer price;
 
@@ -43,6 +46,7 @@ public class Goods extends TimeStamped{
         this.goodsName = goodsRequestDto.getGoodsName();
         this.price = goodsRequestDto.getPrice();
         this.summary = goodsRequestDto.getSummary();
+        this.count = goodsRequestDto.getCount();
         this.image = imageUrl;
         this.packaging = Packaging.valueOf(goodsRequestDto.getPackaging());
         this.content = "images";

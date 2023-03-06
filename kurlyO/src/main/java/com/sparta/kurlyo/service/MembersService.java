@@ -89,11 +89,25 @@ public class MembersService {
         if (!(member.isPresent() && password.equals(member.get().getPassword()))) {
             throw new CustomException(MEMBER_NOT_FOUND);
         }
-        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(member.get().getName(), member.get().getRole()));
+        String token = jwtUtil.createToken(member.get().getAccount(), member.get().getRole());
+        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);
 
-        String token = jwtUtil.createToken(member.get().getName(), member.get().getRole());
-        LoginResponseDto loginResponseDto = new LoginResponseDto(membersRepository.findByName(member.get().getName()).get().getName(), token);
+        LoginResponseDto loginResponseDto = new LoginResponseDto(member.get().getMemberName(), token);
         return new Response().toResponseEntity(LOGIN_SUCCESS, loginResponseDto);
 
+    }
+
+    public ResponseEntity<Response>accountCheck(String account) {
+        if (membersRepository.findByAccount(account).isPresent()) {
+            return new Response().toAllExceptionResponseEntity(DUPLICATE_USER, account);
+        }
+        return new Response().toResponseEntity(SuccessMessage.ACOUNT_CHECK_SUCCESS);
+    }
+
+    public ResponseEntity<Response> emailCheck(String email) {
+        if (membersRepository.findByEmail(email).isPresent()) {
+            return new Response().toAllExceptionResponseEntity(DUPLICATE_EMAIL, email);
+        }
+        return new Response().toResponseEntity(SuccessMessage.EMAIL_CHECK_SUCCESS);
     }
 }

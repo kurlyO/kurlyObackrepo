@@ -6,10 +6,7 @@ import com.sparta.kurlyo.dto.Response;
 import com.sparta.kurlyo.service.MembersService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -28,6 +25,14 @@ public class MembersController {
     @PostMapping("/login")
     public ResponseEntity<Response> login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
         return membersService.login(loginRequestDto, response);
+    }
+    @GetMapping("/signup/accountCheck/{account}")
+    public ResponseEntity<Response> accountCheck(@PathVariable String account) {
+        return membersService.accountCheck(account);
+    }
+    @GetMapping("/signup/emailCheck/{email}")
+    public ResponseEntity<Response> emailCheck(@PathVariable String email) {
+        return membersService.emailCheck(email);
     }
 
 }

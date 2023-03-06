@@ -1,9 +1,6 @@
 package com.sparta.kurlyo.controller;
 
-import com.sparta.kurlyo.dto.CartRequestDto;
-import com.sparta.kurlyo.dto.CartResponseDto;
-import com.sparta.kurlyo.dto.CartWholeResponseDto;
-import com.sparta.kurlyo.dto.Response;
+import com.sparta.kurlyo.dto.*;
 import com.sparta.kurlyo.entity.Members;
 import com.sparta.kurlyo.security.UserDetailsImpl;
 import com.sparta.kurlyo.service.CartService;
@@ -16,13 +13,14 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class CartController {
-
     private final CartService cartService;
 
-    @PostMapping("/cart/{goodsId}")
-    public ResponseEntity<Response> addCart(@PathVariable long goodsId,
-                                                @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return cartService.addCart(goodsId, userDetails.getUsername());
+    // CART 담기
+    @PostMapping("/cart")
+    public ResponseEntity<Response> addCart(@RequestParam("goodsId") long goodsId,
+                                            @RequestParam("amount") int amount,
+                                            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return cartService.addCart(goodsId, amount, userDetails.getUsername());
     }
 
     @GetMapping("/cart")
@@ -44,12 +42,16 @@ public class CartController {
     ) {
 
 
-        return cartService.updateGoodsCart(cartId, requestDto, userDetails);
+        return cartService.updateGoodsCart(cartId, requestDto, userDetails.getMember());
     }
 
-    @DeleteMapping("/{cartId}")
-    public void deleteComment(@PathVariable Long cartId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        cartService.deleteGoodsCart(cartId,userDetails);
+    @DeleteMapping("/cart/{cartId}")
+    public ResponseEntity<Response> deleteComment(@PathVariable Long cartId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return cartService.deleteGoodsCart(cartId,userDetails.getMember());
+    }
+    @PostMapping("/cart/bought/{cartId}")
+    public ResponseEntity<Response> BuyComment(@PathVariable Long cartId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return cartService.BuyGoodsCart(cartId,userDetails.getMember());
     }
 
 }

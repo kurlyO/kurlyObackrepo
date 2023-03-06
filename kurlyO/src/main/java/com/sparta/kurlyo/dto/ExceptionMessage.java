@@ -19,7 +19,11 @@ public enum ExceptionMessage {
     CANNOT_FOLLOW_MYSELF(BAD_REQUEST, "자기 자신은 팔로우 할 수 없습니다"),
     NICKNAME_WITH_SPACES(BAD_REQUEST,"공백이 포함된 닉네임입니다."),
     BUDGET_INVALID_RANGE(BAD_REQUEST,"유효한 범위 내에 있는 예산이 아닙니다."),
+    GOODS_COUNT_INVALID_RANGE(BAD_REQUEST,"상품의 최대 수량을 초과하였습니다."),
     IMAGE_INVALID(BAD_REQUEST,"이미지가 잘못 되었습니다."),
+
+    AMOUNT_OVER_COUNT(BAD_REQUEST,"재고수량을 초과하였습니다."),
+    AMOUNT_UNDER_COUNT(BAD_REQUEST,"수량은 1 이상이여야 합니다."),
 
     /* 401 UNAUTHORIZED : 인증되지 않은 사용자 */
     UNAUTHORIZED_MEMBER(UNAUTHORIZED, "현재 내 계정 정보가 존재하지 않습니다"),
@@ -28,17 +32,21 @@ public enum ExceptionMessage {
 
     /* 403 FORBIDDEN : 권한 없음 */
     USER_FORBIDDEN(FORBIDDEN, "권한이 없습니다."),
+    CART_GOODS_DELETE_FORBIDDEN(FORBIDDEN,"해당 장바구니의 삭제 권한이 없습니다."),
 
     /* 404 NOT_FOUND : Resource 를 찾을 수 없음 */
     MEMBER_NOT_FOUND(NOT_FOUND, "해당 유저 정보를 찾을 수 없습니다"),
     GOODS_NOT_FOUND(NOT_FOUND, "해당 상품을 찾을 수 없습니다"),
     REFRESH_TOKEN_NOT_FOUND(NOT_FOUND, "로그아웃 된 사용자입니다"),
+    CARTEGORY_NOT_FOUND(NOT_FOUND, "해당 카테고리가 존재하지 않습니다."),
+    CART_NOT_FOUND(NOT_FOUND,"해당 장바구니가 존재하지 않습니다."),
 
     /* 409 CONFLICT : Resource 의 현재 상태와 충돌. 보통 중복된 데이터 존재 */
     DUPLICATE_RESOURCE(CONFLICT, "데이터가 이미 존재합니다"),
     DUPLICATE_USER(CONFLICT,"중복된 사용자가 존재합니다."),
     DUPLICATE_NICKNAME(CONFLICT,"중복된 닉네임이 존재합니다."),
     DUPLICATE_EMAIL(CONFLICT,"중복된 이메일이 존재합니다.");
+
 
     private final HttpStatus httpStatus;
     private final String detail;
