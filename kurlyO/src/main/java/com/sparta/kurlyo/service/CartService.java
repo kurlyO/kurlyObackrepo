@@ -107,7 +107,6 @@ public class CartService {
         return CartResponseDto.of(cart);
     }
 
-    //오류 문제 객체끼리 비교하셨습니다 객체 == 객체
     @Transactional
     public ResponseEntity<Response> deleteGoodsCart
             (Long cartId,
@@ -132,12 +131,14 @@ public class CartService {
         Goods goods = goodsRepository.findById(cart.getGoods().getId()).orElseThrow(
                 () -> new CustomException(GOODS_NOT_FOUND)
         );
+        if (cart.getMembers().getMemberName().equals(member.getMemberName())){
+            return new Response().toExceptionResponseEntity(CANNOT_CART_GOODS_BUY);
+        }
         if (!(cart.getAmount()<=goods.getCount())){
             return new Response().toAllExceptionResponseEntity(GOODS_COUNT_INVALID_RANGE, "최대 수량은 " + goods.getCount() + " 입니다.");
         }
-        // count가 0일 때 생각해보기 //PUT 메서드 변경할지 고려해보기.
-        // amount가 0일 때 삭제 처리 고려
         goodsRepository.updateGoodsCount(goods.getId(),goods.getCount()-cart.getAmount());
+        cartRepository.delete(cart);
         return new Response().toResponseEntity(BUY_SUCCESS);
     }
 }

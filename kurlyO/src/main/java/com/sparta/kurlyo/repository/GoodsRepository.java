@@ -13,6 +13,8 @@ import java.util.Optional;
 
 public interface GoodsRepository extends JpaRepository<Goods, Long> {
     Page<Goods> findAllByCategoryName(String categoryName, Pageable pageable);
+
+    Optional<Goods> findByGoodsName(String GoodsName);
     @Modifying
     @Query("UPDATE Goods p SET p.count = :count WHERE p.id = :goodsId")
     void updateGoodsCount(@Param("goodsId") Long goodsId, @Param("count") Integer count);
