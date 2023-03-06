@@ -4,9 +4,7 @@ import com.sparta.kurlyo.dto.CartRequestDto;
 import com.sparta.kurlyo.dto.CartResponseDto;
 import com.sparta.kurlyo.dto.CartWholeResponseDto;
 import com.sparta.kurlyo.dto.CustomException;
-import com.sparta.kurlyo.dto.ExceptionMessage;
 import com.sparta.kurlyo.dto.Response;
-import com.sparta.kurlyo.dto.SuccessMessage;
 import com.sparta.kurlyo.entity.Cart;
 import com.sparta.kurlyo.entity.Goods;
 import com.sparta.kurlyo.entity.Members;
@@ -23,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.sparta.kurlyo.dto.ExceptionMessage.*;
+import static com.sparta.kurlyo.dto.SuccessMessage.*;
 
 @Service
 @RequiredArgsConstructor
@@ -42,21 +41,20 @@ public class CartService {
             Goods goods = getGoods(goodsId);
             cartRepository.save(new Cart(member, goods, amount));
         }
-        return Response.toResponseEntity(SuccessMessage.ADD_CART_SUCCESS);
+        return Response.toResponseEntity(ADD_CART_SUCCESS);
     }
 
     private Goods getGoods(long goodsId) {
         return goodsRepository.findById(goodsId).orElseThrow(
-                () -> new CustomException(ExceptionMessage.GOODS_NOT_FOUND)
+                () -> new CustomException(GOODS_NOT_FOUND)
         );
     }
 
     private Members getMember(String username) {
         return membersRepository.findByAccount(username).orElseThrow(
-                () -> new CustomException(ExceptionMessage.UNAUTHORIZED_MEMBER)
+                () -> new CustomException(UNAUTHORIZED_MEMBER)
         );
     }
-
 
     @Transactional(readOnly = true)
     public CartWholeResponseDto getCart(Members member) {
@@ -123,7 +121,7 @@ public class CartService {
         }
 
         cartRepository.delete(cart);
-        return new Response().toResponseEntity(SuccessMessage.DELETE_CART_GOODS_SUCCESS);
+        return new Response().toResponseEntity(DELETE_CART_GOODS_SUCCESS);
     }
 
     @Transactional
@@ -140,7 +138,7 @@ public class CartService {
         // count가 0일 때 생각해보기 //PUT 메서드 변경할지 고려해보기.
         // amount가 0일 때 삭제 처리 고려
         goodsRepository.updateGoodsCount(goods.getId(),goods.getCount()-cart.getAmount());
-        return new Response().toResponseEntity(SuccessMessage.BUY_SUCCESS);
+        return new Response().toResponseEntity(BUY_SUCCESS);
     }
 }
 //
