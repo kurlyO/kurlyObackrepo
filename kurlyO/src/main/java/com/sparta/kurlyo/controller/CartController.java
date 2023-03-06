@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class CartController {
     private final CartService cartService;
-
     // CART 담기
     @PostMapping("/cart")
     public ResponseEntity<Response> addCart(@RequestParam("goodsId") long goodsId,
