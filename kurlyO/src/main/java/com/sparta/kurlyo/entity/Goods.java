@@ -41,6 +41,17 @@ public class Goods extends TimeStamped{
     @Column
     private String content;
 
+    public Goods(GoodsRequestDto goodsRequestDto, String imageUrl, Category category) {
+        this.category = category;
+        this.goodsName = goodsRequestDto.getGoodsName();
+        this.price = goodsRequestDto.getPrice();
+        this.summary = goodsRequestDto.getSummary();
+        this.count = goodsRequestDto.getCount();
+        this.image = imageUrl;
+        this.packaging = Packaging.valueOf(goodsRequestDto.getPackaging());
+        this.content = "images";
+    }
+
     public Goods(GoodsRequestDto goodsRequestDto, Category category){
         this.category = category;
         this.goodsName = goodsRequestDto.getGoodsName();
