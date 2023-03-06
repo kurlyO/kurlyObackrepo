@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class CartResponseDto {
 
+    private Long cartId;
     private Long goodsId;
     private String image;
     private String goodsName;
@@ -20,6 +21,7 @@ public class CartResponseDto {
     private LocalDateTime modifiedAt;
 
     public CartResponseDto(Cart cart) {
+        this.cartId = cart.getId();
         this.goodsId = cart.getGoods().getId();
         this.image = cart.getGoods().getImage();
         this.goodsName = cart.getGoods().getGoodsName();

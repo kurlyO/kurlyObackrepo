@@ -13,13 +13,11 @@ import java.util.List;
 @NoArgsConstructor
 public class CartWholeResponseDto {
 
-    private Long cartId;
     private List<CartResponseDto> cold = new ArrayList<>();
     private List<CartResponseDto> frozen = new ArrayList<>();
     private List<CartResponseDto> room_temperature = new ArrayList<>();
 
     public void addGoodsCart(Cart cart){
-        this.cartId = cart.getId();
         Packaging packaging = cart.getGoods().getPackaging();
         if (packaging.equals(Packaging.COLD)) {
             cold.add(new CartResponseDto(cart));
