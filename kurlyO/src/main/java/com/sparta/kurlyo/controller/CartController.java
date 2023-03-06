@@ -17,16 +17,16 @@ public class CartController {
     private final CartService cartService;
 
     // CART 담기
-    @PostMapping("/cart")
-    public ResponseEntity<Response> addCart(@RequestParam("goodsId") Long goodsId,
-                                            @RequestParam("amount") int amount,
-                                            @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    @PostMapping("/cart/{goodsId}")
+    public ResponseEntity<Response> addCart(@PathVariable("goodsId") long goodsId,
+                            @RequestParam("amount") int amount,
+                            @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return cartService.addCart(goodsId, amount, userDetails.getUsername());
     }
 
     @GetMapping("/cart")
     public ResponseEntity<CartWholeResponseDto> getCart(
-            @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails) {
+                     @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails) {
         // userDetails가 존재하는지 확인
         if (userDetails == null) {
             throw new IllegalArgumentException("사용자가 존재하지 않습니다");
@@ -37,7 +37,7 @@ public class CartController {
     }
 
     @PutMapping("/cart/amount/{cartId}")
-    public ResponseEntity<CartResponseDto> updateCart(
+    public ResponseEntity<CartResponseDto> updateCart (
             @PathVariable Long cartId,
             @RequestBody CartRequestDto requestDto,
             @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails
@@ -49,14 +49,13 @@ public class CartController {
 
     @DeleteMapping("/cart/{cartId}")
     public ResponseEntity<Response> deleteComment(@PathVariable Long cartId,
-                                                  @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return cartService.deleteGoodsCart(cartId, userDetails.getMember());
+                  @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return cartService.deleteGoodsCart(cartId,userDetails.getMember());
     }
-
     @PostMapping("/cart/bought/{cartId}")
     public ResponseEntity<Response> BuyComment(@PathVariable Long cartId,
-                                               @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return cartService.BuyGoodsCart(cartId, userDetails.getMember());
+                   @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return cartService.BuyGoodsCart(cartId,userDetails.getMember());
     }
 
 }
