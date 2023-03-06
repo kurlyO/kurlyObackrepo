@@ -23,7 +23,7 @@ public class GoodsResponseDto {
         this.summary = goods.getSummary();
         this.image = goods.getImage();
         this.count = goods.getCount();
-        this.packaging = goods.getPackaging().name();
+        this.packaging = goods.getPackaging().getKorean();
         this.category = goods.getCategory().getName();
     }
 }

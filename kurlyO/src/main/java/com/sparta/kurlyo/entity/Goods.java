@@ -22,6 +22,7 @@ public class Goods extends TimeStamped{
 
     @Column(nullable = false)
     private String goodsName;
+
     @Column
     private Integer count;
 

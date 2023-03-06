@@ -16,7 +16,6 @@ import java.util.Optional;
 
 import static com.sparta.kurlyo.dto.SuccessMessage.*;
 import static com.sparta.kurlyo.dto.ExceptionMessage.*;
-import static org.springframework.http.HttpStatus.CONFLICT;
 
 @Service
 @RequiredArgsConstructor
