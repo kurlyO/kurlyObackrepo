@@ -41,13 +41,13 @@ public class Goods extends TimeStamped{
     @Column
     private String content;
 
-    public Goods(GoodsRequestDto goodsRequestDto, String imageUrl, Category category){
+    public Goods(GoodsRequestDto goodsRequestDto, Category category){
         this.category = category;
         this.goodsName = goodsRequestDto.getGoodsName();
         this.price = goodsRequestDto.getPrice();
         this.summary = goodsRequestDto.getSummary();
         this.count = goodsRequestDto.getCount();
-        this.image = imageUrl;
+        this.image = goodsRequestDto.getImage();
         this.packaging = Packaging.valueOf(goodsRequestDto.getPackaging());
         this.content = "images";
         //컨텐츠 이미지 고려

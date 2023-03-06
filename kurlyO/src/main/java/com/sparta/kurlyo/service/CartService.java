@@ -35,13 +35,32 @@ public class CartService {
     public ResponseEntity<Response> addCart(long goodsId, int amount, String username) {
         Members member = getMember(username);
         Optional<Cart> cart = cartRepository.findByGoods_IdAndMembers_Account(goodsId, username);
+        Goods goods = getGoods(goodsId);
+
         if (cart.isPresent()) {
-            cart.get().updateAmount(amount);
+            int remain = goods.getCount() - cart.get().getAmount();
+            if (checkAmount(amount, remain)) {
+                cart.get().updateAmount(amount);
+            } else {
+                return Response.toAllExceptionResponseEntity(AMOUNT_OVER_COUNT, new AmountResponseDto(remain));
+            }
         } else {
-            Goods goods = getGoods(goodsId);
-            cartRepository.save(new Cart(member, goods, amount));
+            int remain = goods.getCount();
+            if (checkAmount(amount, remain)) {
+                cartRepository.save(new Cart(member, goods, amount));
+            } else {
+                return Response.toAllExceptionResponseEntity(AMOUNT_OVER_COUNT, new AmountResponseDto(remain));
+            }
         }
+
         return Response.toResponseEntity(ADD_CART_SUCCESS);
+    }
+
+    private boolean checkAmount(int amount, int remain) {
+        if (amount <= remain) {
+            return true;
+        }
+        return false;
     }
 
     private Goods getGoods(long goodsId) {
@@ -97,16 +116,17 @@ public class CartService {
             cart.updateAmount(-1);
         }
 
-        if(cart.getAmount() <= 0) {
+        if (cart.getAmount() <= 0) {
             throw new CustomException(AMOUNT_UNDER_COUNT);
         }
-        if(cart.getGoods().getCount() < cart.getAmount()) {
+        if (cart.getGoods().getCount() < cart.getAmount()) {
             throw new CustomException(AMOUNT_OVER_COUNT);
         }
 
         return ResponseEntity.ok(CartResponseDto.of(cart));
     }
 
+    //오류 문제 객체끼리 비교하셨습니다 객체 == 객체
     @Transactional
     public ResponseEntity<Response> deleteGoodsCart
             (Long cartId,
