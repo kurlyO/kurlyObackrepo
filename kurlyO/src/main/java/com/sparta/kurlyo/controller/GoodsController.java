@@ -4,6 +4,7 @@ import com.sparta.kurlyo.dto.GoodsRequestDto;
 import com.sparta.kurlyo.dto.ResponseDto;
 import com.sparta.kurlyo.dto.Response;
 import com.sparta.kurlyo.service.GoodsService;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,8 +28,8 @@ public class GoodsController {
     // 상세페이지 상품 수량 조절
     @PostMapping("/goods/amount")
     public ResponseEntity<Response> updateAmount(@RequestParam("goodsId") long goodsId,
-                                              @RequestParam("isPlus") boolean isPlus,
-                                              @RequestParam("amount_now") int amount_now) {
+                                                @RequestParam("isPlus") boolean isPlus,
+                                         @Parameter(hidden = true) @RequestParam("amount_now") int amount_now) {
         return goodsService.updateAmount(goodsId, isPlus, amount_now);
     }
 
@@ -51,7 +52,8 @@ public class GoodsController {
     }
 
     @PostMapping("/goods")
-    public ResponseEntity<Response> createGoods(@RequestPart GoodsRequestDto goodsRequestDto, @RequestPart(value = "image") MultipartFile multipartFile) throws IOException {
+    public ResponseEntity<Response> createGoods(@RequestPart GoodsRequestDto goodsRequestDto,
+                            @RequestPart(value = "image") MultipartFile multipartFile) throws IOException {
         return goodsService.create(goodsRequestDto, multipartFile);
     }
 }
