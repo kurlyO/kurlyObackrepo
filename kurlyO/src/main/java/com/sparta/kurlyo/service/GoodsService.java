@@ -47,10 +47,10 @@ public class GoodsService {
 
     //상품 등록 페이지
     @Transactional
-    public ResponseDto<Boolean> create(GoodsRequestDto goodsRequestDto, MultipartFile multipartFile) throws IOException {
-        String imageUrl = s3Uploader.uploadFiles(multipartFile, "images");
+    public ResponseDto<Boolean> create2(GoodsRequestDto goodsRequestDto) {
+//        String imageUrl = s3Uploader.uploadFiles(multipartFile, "images");
         Category category = categoryRepository.findByName(goodsRequestDto.getCategory());
-        goodsRepository.save(new Goods(goodsRequestDto, imageUrl, category));
+        goodsRepository.save(new Goods(goodsRequestDto, category));
         return ResponseDto.success(null);
     }
 

@@ -1,10 +1,6 @@
 package com.sparta.kurlyo.service;
 
-import com.sparta.kurlyo.dto.CartRequestDto;
-import com.sparta.kurlyo.dto.CartResponseDto;
-import com.sparta.kurlyo.dto.CartWholeResponseDto;
-import com.sparta.kurlyo.dto.CustomException;
-import com.sparta.kurlyo.dto.Response;
+import com.sparta.kurlyo.dto.*;
 import com.sparta.kurlyo.entity.Cart;
 import com.sparta.kurlyo.entity.Goods;
 import com.sparta.kurlyo.entity.Members;
@@ -35,13 +31,32 @@ public class CartService {
     public ResponseEntity<Response> addCart(long goodsId, int amount, String username) {
         Members member = getMember(username);
         Optional<Cart> cart = cartRepository.findByGoods_IdAndMembers_Account(goodsId, username);
+        Goods goods = getGoods(goodsId);
+
         if (cart.isPresent()) {
-            cart.get().updateAmount(amount);
+            int remain = goods.getCount() - cart.get().getAmount();
+            if (checkAmount(amount, remain)) {
+                cart.get().updateAmount(amount);
+            } else {
+                return Response.toAllExceptionResponseEntity(AMOUNT_OVER_COUNT, new AmountResponseDto(remain));
+            }
         } else {
-            Goods goods = getGoods(goodsId);
-            cartRepository.save(new Cart(member, goods, amount));
+            int remain = goods.getCount();
+            if (checkAmount(amount, remain)) {
+                cartRepository.save(new Cart(member, goods, amount));
+            } else {
+                return Response.toAllExceptionResponseEntity(AMOUNT_OVER_COUNT, new AmountResponseDto(remain));
+            }
         }
+
         return Response.toResponseEntity(ADD_CART_SUCCESS);
+    }
+
+    private boolean checkAmount(int amount, int remain) {
+        if (amount <= remain) {
+            return true;
+        }
+        return false;
     }
 
     private Goods getGoods(long goodsId) {
@@ -97,10 +112,10 @@ public class CartService {
             cart.updateAmount(-1);
         }
 
-        if(cart.getAmount() <= 0) {
+        if (cart.getAmount() <= 0) {
             throw new CustomException(AMOUNT_UNDER_COUNT);
         }
-        if(cart.getGoods().getCount() < cart.getAmount()) {
+        if (cart.getGoods().getCount() < cart.getAmount()) {
             throw new CustomException(AMOUNT_OVER_COUNT);
         }
 
@@ -110,8 +125,8 @@ public class CartService {
     //오류 문제 객체끼리 비교하셨습니다 객체 == 객체
     @Transactional
     public ResponseEntity<Response> deleteGoodsCart
-            (Long cartId,
-             Members member) {
+    (Long cartId,
+     Members member) {
         Cart cart = cartRepository.findById(cartId).orElseThrow(
                 () -> new CustomException(CART_NOT_FOUND)
         );
@@ -132,12 +147,12 @@ public class CartService {
         Goods goods = goodsRepository.findById(cart.getGoods().getId()).orElseThrow(
                 () -> new CustomException(GOODS_NOT_FOUND)
         );
-        if (!(cart.getAmount()<=goods.getCount())){
+        if (!(cart.getAmount() <= goods.getCount())) {
             return new Response().toAllExceptionResponseEntity(GOODS_COUNT_INVALID_RANGE, "최대 수량은 " + goods.getCount() + " 입니다.");
         }
         // count가 0일 때 생각해보기 //PUT 메서드 변경할지 고려해보기.
         // amount가 0일 때 삭제 처리 고려
-        goodsRepository.updateGoodsCount(goods.getId(),goods.getCount()-cart.getAmount());
+        goodsRepository.updateGoodsCount(goods.getId(), goods.getCount() - cart.getAmount());
         return new Response().toResponseEntity(BUY_SUCCESS);
     }
 }
