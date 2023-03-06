@@ -26,10 +26,12 @@ public class MembersController {
     public ResponseEntity<Response> login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
         return membersService.login(loginRequestDto, response);
     }
+
     @GetMapping("/signup/accountCheck/{account}")
     public ResponseEntity<Response> accountCheck(@PathVariable String account) {
         return membersService.accountCheck(account);
     }
+
     @GetMapping("/signup/emailCheck/{email}")
     public ResponseEntity<Response> emailCheck(@PathVariable String email) {
         return membersService.emailCheck(email);
