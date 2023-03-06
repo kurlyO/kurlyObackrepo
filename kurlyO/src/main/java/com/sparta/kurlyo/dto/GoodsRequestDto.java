@@ -6,6 +6,8 @@ import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 @Getter
+@Setter
+@NoArgsConstructor
 public class GoodsRequestDto {
     private String goodsName;
     private Integer price;
