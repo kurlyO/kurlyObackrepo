@@ -57,7 +57,7 @@ public class CartService {
     }
 
     @Transactional(readOnly = true)
-    public CartWholeResponseDto getCart(Members member) {
+    public ResponseEntity<CartWholeResponseDto> getCart(Members member) {
         // 장바구니 목록을 가져오는 것
         CartWholeResponseDto dto = new CartWholeResponseDto();
         // 특정 사용자의 장바구니 목록을 가지고 옴
@@ -66,11 +66,11 @@ public class CartService {
         for (Cart cart : cartList) {
             dto.addGoodsCart(cart);
         }
-        return dto;
+        return ResponseEntity.ok(dto);
     }
 
     @Transactional
-    public CartResponseDto updateGoodsCart
+    public ResponseEntity<CartResponseDto> updateGoodsCart
             (Long cartId,
              CartRequestDto requestDto,
              Members member) {
@@ -104,7 +104,7 @@ public class CartService {
             throw new CustomException(AMOUNT_OVER_COUNT);
         }
 
-        return CartResponseDto.of(cart);
+        return ResponseEntity.ok(CartResponseDto.of(cart));
     }
 
     //오류 문제 객체끼리 비교하셨습니다 객체 == 객체

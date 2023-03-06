@@ -24,7 +24,7 @@ public class CartController {
     }
 
     @GetMapping("/cart")
-    public CartWholeResponseDto getCart(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<CartWholeResponseDto> getCart(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         // userDetails가 존재하는지 확인
         if (userDetails == null) {
             throw new IllegalArgumentException("사용자가 존재하지 않습니다");
@@ -35,7 +35,7 @@ public class CartController {
     }
 
     @PutMapping("/cart/amount/{cartId}")
-    public CartResponseDto updateCart (
+    public ResponseEntity<CartResponseDto> updateCart (
             @PathVariable Long cartId,
             @RequestBody CartRequestDto requestDto,
             @AuthenticationPrincipal UserDetailsImpl userDetails
