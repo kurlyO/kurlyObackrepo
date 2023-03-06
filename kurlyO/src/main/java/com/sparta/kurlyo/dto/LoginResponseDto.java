@@ -5,12 +5,10 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class LoginResponseDto<T> {
+public class LoginResponseDto {
     private String name;
-    private T token;
 
-    public LoginResponseDto(String name, T token) {
+    public LoginResponseDto(String name) {
         this.name = name;
-        this.token = token;
     }
 }
