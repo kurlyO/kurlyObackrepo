@@ -8,6 +8,7 @@ import com.sparta.kurlyo.entity.Category;
 import com.sparta.kurlyo.entity.Goods;
 import com.sparta.kurlyo.service.GoodsService;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
@@ -27,6 +28,7 @@ public class GoodsController {
     private final GoodsService goodsService;
 
     // 상품 상세페이지
+    @SecurityRequirements
     @GetMapping("/goods/{goodsId}")
     public ResponseEntity<Response> getDetails(@PathVariable long goodsId) {
         return goodsService.getDetails(goodsId);
@@ -41,17 +43,19 @@ public class GoodsController {
     }
 
     //카테고리 전체 리스트
+    @SecurityRequirements
     @GetMapping("/categories")
     public ResponseEntity<Response> getCategoriesList() {
         return goodsService.getCategoriesList();
     }
 
     //카테고리 구분 리스트
+    @SecurityRequirements
     @GetMapping("/categories/{categoryName}")
     public ResponseEntity<Response> getCategoriesList(@PathVariable String categoryName) {
         return goodsService.getSummaryList(categoryName);
     }
-
+    @SecurityRequirements
     @PostMapping("/goods2")
     public ResponseDto<Boolean> createGoods2(@RequestBody GoodsRequestDto goodsRequestDto) {
         return goodsService.create2(goodsRequestDto);
