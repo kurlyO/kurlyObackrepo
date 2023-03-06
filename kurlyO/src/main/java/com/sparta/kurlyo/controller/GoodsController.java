@@ -1,16 +1,22 @@
 package com.sparta.kurlyo.controller;
 
+import com.sparta.kurlyo.dto.GoodsListResponseDto;
 import com.sparta.kurlyo.dto.GoodsRequestDto;
 import com.sparta.kurlyo.dto.ResponseDto;
 import com.sparta.kurlyo.dto.Response;
+import com.sparta.kurlyo.entity.Category;
+import com.sparta.kurlyo.entity.Goods;
 import com.sparta.kurlyo.service.GoodsService;
-import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -38,22 +44,19 @@ public class GoodsController {
     public ResponseEntity<Response> getCategoriesList() {
         return goodsService.getCategoriesList();
     }
-
     //카테고리 구분 리스트
     @GetMapping("/categories/{categoryName}")
     public ResponseEntity<Response> getCategoriesList(@PathVariable String categoryName) {
         return goodsService.getSummaryList(categoryName);
     }
 
-//    @Secured(value = UserRoleEnum.ADMIN) 권한 접근
     @PostMapping("/goods2")
     public ResponseDto<Boolean> createGoods2(@RequestBody GoodsRequestDto goodsRequestDto) {
         return goodsService.create2(goodsRequestDto);
     }
-
-    @PostMapping("/goods")
-    public ResponseEntity<Response> createGoods(@RequestPart GoodsRequestDto goodsRequestDto,
-                            @RequestPart(value = "image") MultipartFile multipartFile) throws IOException {
-        return goodsService.create(goodsRequestDto, multipartFile);
+    //    @Secured(value = UserRoleEnum.ADMIN) 권한 접근
+    @PostMapping(value = "/goods", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<Response> createGoods(@ModelAttribute GoodsRequestDto goodsRequestDto) throws IOException {
+        return goodsService.create(goodsRequestDto);
     }
 }

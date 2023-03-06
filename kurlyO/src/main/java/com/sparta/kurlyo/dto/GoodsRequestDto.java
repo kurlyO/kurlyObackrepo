@@ -1,12 +1,11 @@
 package com.sparta.kurlyo.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
 public class GoodsRequestDto {
     private String goodsName;
     private Integer price;
@@ -15,4 +14,6 @@ public class GoodsRequestDto {
     private String category;
     private String packaging;
     private Integer count;
+
+    private MultipartFile multipartFile;
 }
