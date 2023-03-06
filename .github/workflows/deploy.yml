@@ -37,7 +37,7 @@ jobs:
       # (3) Gradle build (Test 제외)
 
       - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+        run: chmod +x ./kurlyO/gradlew
 
 
       ## create application.properties
