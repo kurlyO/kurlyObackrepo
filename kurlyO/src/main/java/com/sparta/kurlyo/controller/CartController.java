@@ -17,8 +17,8 @@ public class CartController {
     private final CartService cartService;
 
     // CART 담기
-    @PostMapping("/cart")
-    public ResponseEntity<Response> addCart(@RequestParam("goodsId") long goodsId,
+    @PostMapping("/cart/{goodsId}")
+    public ResponseEntity<Response> addCart(@PathVariable("goodsId") long goodsId,
                             @RequestParam("amount") int amount,
                             @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return cartService.addCart(goodsId, amount, userDetails.getUsername());
@@ -43,7 +43,6 @@ public class CartController {
             @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
 
-
         return cartService.updateGoodsCart(cartId, requestDto, userDetails.getMember());
     }
 
@@ -52,6 +51,7 @@ public class CartController {
                   @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return cartService.deleteGoodsCart(cartId,userDetails.getMember());
     }
+
     @PostMapping("/cart/bought/{cartId}")
     public ResponseEntity<Response> BuyComment(@PathVariable Long cartId,
                    @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails) {

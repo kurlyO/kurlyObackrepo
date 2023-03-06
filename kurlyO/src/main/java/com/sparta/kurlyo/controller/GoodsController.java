@@ -3,10 +3,12 @@ package com.sparta.kurlyo.controller;
 import com.sparta.kurlyo.dto.GoodsRequestDto;
 import com.sparta.kurlyo.dto.ResponseDto;
 import com.sparta.kurlyo.dto.Response;
+import com.sparta.kurlyo.entity.UserRoleEnum;
 import com.sparta.kurlyo.service.GoodsService;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,8 +28,8 @@ public class GoodsController {
     }
 
     // 상세페이지 상품 수량 조절
-    @PostMapping("/goods/amount")
-    public ResponseEntity<Response> updateAmount(@RequestParam("goodsId") long goodsId,
+    @PostMapping("/goods/amount/{goodsId}")
+    public ResponseEntity<Response> updateAmount(@PathVariable("goodsId") long goodsId,
                                                 @RequestParam("isPlus") boolean isPlus,
                                          @Parameter(hidden = true) @RequestParam("amount_now") int amount_now) {
         return goodsService.updateAmount(goodsId, isPlus, amount_now);
@@ -45,7 +47,7 @@ public class GoodsController {
         return goodsService.getSummaryList(categoryName);
     }
 
-//    @Secured(value = UserRoleEnum.ADMIN) 권한 접근
+//    @Secured(value = UserRoleEnum.ADMIN)  //권한 접근
     @PostMapping("/goods2")
     public ResponseDto<Boolean> createGoods2(@RequestBody GoodsRequestDto goodsRequestDto) {
         return goodsService.create2(goodsRequestDto);
