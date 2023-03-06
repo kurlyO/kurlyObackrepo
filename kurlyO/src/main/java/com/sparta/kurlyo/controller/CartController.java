@@ -16,10 +16,12 @@ public class CartController {
 
     private final CartService cartService;
 
-    @PostMapping("/cart/{goodsId}")
-    public ResponseEntity<Response> addCart(@PathVariable long goodsId,
+    // CART 담기
+    @PostMapping("/cart")
+    public ResponseEntity<Response> addCart(@RequestParam("goodsId") long goodsId,
+                                            @RequestParam("amount") int amount,
                                             @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return cartService.addCart(goodsId, userDetails.getUsername());
+        return cartService.addCart(goodsId, amount, userDetails.getUsername());
     }
 
     @GetMapping("/cart")

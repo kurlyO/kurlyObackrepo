@@ -14,6 +14,7 @@ public enum SuccessMessage {
     EMAIL_CHECK_SUCCESS(HttpStatus.OK,"사용 가능한 이메일입니다."),
     USER_INFO_SUCCESS(HttpStatus.OK, "유저정보 불러오기 성공"),
     GOODS_DETAIL_SUCCESS(HttpStatus.OK, "상품 정보 불러오기 성공"),
+    GOODS_UPDATE_AMOUNT_SUCCESS(HttpStatus.OK, "상품 수량 추가 성공"),
     GOODS_CATEGORY_LIST_SUCCESS(HttpStatus.OK, "카테고리 상품 리스트 불러오기 성공"),
     GOODS_ALL_CATEGORY_LIST_SUCCESS(HttpStatus.OK, "카테고리 상품 전체 리스트 불러오기 성공"),
     ADD_CART_SUCCESS(HttpStatus.OK, "해당 상품을 장바구니에 넣었습니다."),

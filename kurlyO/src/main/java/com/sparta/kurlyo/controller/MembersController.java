@@ -1,7 +1,6 @@
 package com.sparta.kurlyo.controller;
 
 import com.sparta.kurlyo.dto.LoginRequestDto;
-import com.sparta.kurlyo.dto.ResponseDto;
 import com.sparta.kurlyo.dto.SignupRequestDto;
 import com.sparta.kurlyo.dto.Response;
 import com.sparta.kurlyo.service.MembersService;

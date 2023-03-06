@@ -33,14 +33,14 @@ public class CartService {
     private final GoodsRepository goodsRepository;
 
     @Transactional
-    public ResponseEntity<Response> addCart(long goodsId, String username) {
+    public ResponseEntity<Response> addCart(long goodsId, int amount, String username) {
         Members member = getMember(username);
         Optional<Cart> cart = cartRepository.findByGoods_IdAndMembers_Account(goodsId, username);
         if (cart.isPresent()) {
-            cart.get().addAmount();
+            cart.get().updateAmount(amount);
         } else {
             Goods goods = getGoods(goodsId);
-            cartRepository.save(new Cart(member, goods));
+            cartRepository.save(new Cart(member, goods, amount));
         }
         return Response.toResponseEntity(SuccessMessage.ADD_CART_SUCCESS);
     }
@@ -94,9 +94,9 @@ public class CartService {
         // isPlus == true : cart.amount += 1
         // isPlus == false : cart.amount -= 1
         if (requestDto.getIsPlus()) {
-            cart.update(1);
+            cart.updateAmount(1);
         } else {
-            cart.update(-1);
+            cart.updateAmount(-1);
         }
 
         if(cart.getAmount() <= 0) {
