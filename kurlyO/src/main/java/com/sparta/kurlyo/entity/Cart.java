@@ -25,19 +25,13 @@ public class Cart extends TimeStamped {
     @JoinColumn(name = "goods_id", nullable = false)
     private Goods goods;
 
-    public Cart(Members members, Goods goods) {
+    public Cart(Members members, Goods goods, int amount) {
         this.members = members;
         this.goods = goods;
-        this.amount = 1;
+        this.amount = amount;
     }
 
-    public void addAmount() {
-
-        this.amount += 1;
-    }
-
-    public void update(int amount){
-
+    public void updateAmount(int amount) {
         this.amount += amount;
     }
 }

@@ -21,8 +21,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.sparta.kurlyo.dto.ExceptionMessage.CARTEGORY_NOT_FOUND;
-import static com.sparta.kurlyo.dto.ExceptionMessage.CART_GOODS_DELETE_FORBIDDEN;
+import static com.sparta.kurlyo.dto.ExceptionMessage.*;
+import static com.sparta.kurlyo.dto.SuccessMessage.*;
 
 @Slf4j
 @Service
@@ -35,7 +35,7 @@ public class GoodsService {
     //상세 페이지
     @Transactional(readOnly = true)
     public ResponseEntity<Response> getDetails(long goodsId) {
-        return new Response().toResponseEntity(SuccessMessage.GOODS_DETAIL_SUCCESS,
+        return new Response().toResponseEntity(GOODS_DETAIL_SUCCESS,
                 new GoodsResponseDto(getGoods(goodsId)));
     }
 
@@ -44,6 +44,7 @@ public class GoodsService {
                 () -> new IllegalArgumentException("해당 상품이 존재하지 않습니다.")
         );
     }
+
     //상품 등록 페이지
     @Transactional
     public ResponseDto<Boolean> create(GoodsRequestDto goodsRequestDto, MultipartFile multipartFile) throws IOException {
@@ -66,7 +67,7 @@ public class GoodsService {
         for (Goods goodsGet : goodsPage) {
             goodsList.add(GoodsListResponseDto.of(goodsGet));
         }
-        return new Response().toResponseEntity(SuccessMessage.GOODS_ALL_CATEGORY_LIST_SUCCESS,
+        return new Response().toResponseEntity(GOODS_ALL_CATEGORY_LIST_SUCCESS,
                 goodsList);
     }
 
@@ -75,14 +76,27 @@ public class GoodsService {
         Sort sort = Sort.by(Sort.Direction.DESC, "createAt");
         Pageable pageable = PageRequest.of(0, 99, sort);
         Page<Goods> goodsCategoryPage = goodsRepository.findAllByCategoryName(categoryName, pageable);
-        if (goodsCategoryPage.isEmpty()){
+        if (goodsCategoryPage.isEmpty()) {
             throw new CustomException(CARTEGORY_NOT_FOUND);
         }
         List<GoodsListResponseDto> goodsCategoryList = new ArrayList<>();
         for (Goods goods : goodsCategoryPage) {
             goodsCategoryList.add(GoodsListResponseDto.of(goods));
         }
-        return new Response().toResponseEntity(SuccessMessage.GOODS_CATEGORY_LIST_SUCCESS,
+        return new Response().toResponseEntity(GOODS_CATEGORY_LIST_SUCCESS,
                 goodsCategoryList);
+    }
+
+    @Transactional
+    public ResponseEntity<Response> updateAmount(long goodsId, boolean isPlus, int amount_now) {
+        Goods goods = getGoods(goodsId);
+        int amount = isPlus ? amount_now + 1 : amount_now - 1;
+        if (amount > goods.getCount()) {
+            return Response.toAllExceptionResponseEntity(AMOUNT_OVER_COUNT, new AmountResponseDto(goods.getCount()));
+        }
+        if (amount <= 0) {
+            return Response.toAllExceptionResponseEntity(AMOUNT_UNDER_COUNT, new AmountResponseDto(1));
+        }
+        return new Response().toResponseEntity(GOODS_UPDATE_AMOUNT_SUCCESS, new AmountResponseDto(goods.getCount()));
     }
 }
