@@ -9,6 +9,7 @@ import com.sparta.kurlyo.entity.Goods;
 import com.sparta.kurlyo.service.GoodsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
@@ -49,8 +50,8 @@ public class GoodsController {
         return goodsService.getSummaryList(categoryName);
     }
 //    @Secured(value = UserRoleEnum.ADMIN) 권한 접근
-    @PostMapping("/goods")
-    public ResponseEntity<Response> createGoods(@RequestPart GoodsRequestDto goodsRequestDto, @RequestPart(value = "image") MultipartFile multipartFile) throws IOException {
-        return goodsService.create(goodsRequestDto, multipartFile);
+    @PostMapping(value = "/goods", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<Response> createGoods(@ModelAttribute GoodsRequestDto goodsRequestDto) throws IOException {
+        return goodsService.create(goodsRequestDto);
     }
 }

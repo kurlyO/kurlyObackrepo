@@ -47,11 +47,11 @@ public class GoodsService {
 
     //상품 등록 페이지
     @Transactional
-    public ResponseEntity<Response> create(GoodsRequestDto goodsRequestDto, MultipartFile multipartFile) throws IOException {
+    public ResponseEntity<Response> create(GoodsRequestDto goodsRequestDto) throws IOException {
         if (goodsRepository.findByGoodsName(goodsRequestDto.getGoodsName().toString()).isPresent()){
             return new Response().toAllExceptionResponseEntity(DUPLICATE_GOODS, goodsRequestDto.getGoodsName());
         }
-        String imageUrl = s3Uploader.uploadFiles(multipartFile, "images");
+        String imageUrl = s3Uploader.uploadFiles(goodsRequestDto.getMultipartFile(), "images");
         Category category = categoryRepository.findByName(goodsRequestDto.getCategory());
         goodsRepository.save(new Goods(goodsRequestDto, imageUrl, category));
         return new Response().toResponseEntity(SuccessMessage.GOODS_POST_SUCCESS);
