@@ -18,7 +18,7 @@ public class CartController {
 
     // CART 담기
     @PostMapping("/cart")
-    public ResponseEntity<Response> addCart(@RequestParam("goodsId") long goodsId,
+    public ResponseEntity<Response> addCart(@RequestParam("goodsId") Long goodsId,
                                             @RequestParam("amount") int amount,
                                             @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return cartService.addCart(goodsId, amount, userDetails.getUsername());
