@@ -8,6 +8,7 @@ import com.sparta.kurlyo.entity.Category;
 import com.sparta.kurlyo.entity.Goods;
 import com.sparta.kurlyo.service.GoodsService;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
@@ -60,9 +61,8 @@ public class GoodsController {
         return goodsService.create2(goodsRequestDto);
     }
 
-    @PostMapping("/goods")
-    public ResponseEntity<Response> createGoods(@RequestPart GoodsRequestDto goodsRequestDto,
-                            @RequestPart(value = "image") MultipartFile multipartFile) throws IOException {
-        return goodsService.create(goodsRequestDto, multipartFile);
+    @PostMapping(value = "/goods", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<Response> createGoods(@ModelAttribute GoodsRequestDto goodsRequestDto) throws IOException {
+        return goodsService.create(goodsRequestDto);
     }
 }
