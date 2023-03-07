@@ -12,9 +12,11 @@ public class ResponseDto<T> {
     private T result;
 
     public static <T> ResponseDto<T> success(T result) {
+
         return new ResponseDto<>(true, result);
     }
     public static <T> ResponseDto<T> fail() {
+
         return new ResponseDto<>(false, null);
     }
 }
