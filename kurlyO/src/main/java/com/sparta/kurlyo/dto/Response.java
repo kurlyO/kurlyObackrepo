@@ -64,7 +64,7 @@ public class Response<T> {
                         .build()
                 );
     }
-    public ResponseEntity<Response> toResponseEntity(SuccessMessage message, T data) {
+    public static<T> ResponseEntity<Response> toResponseEntity(SuccessMessage message, T data) {
         return ResponseEntity
                 .status(message.getHttpStatus())
                 .body(Response.builder()

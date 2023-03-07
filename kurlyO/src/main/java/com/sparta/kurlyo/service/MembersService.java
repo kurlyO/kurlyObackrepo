@@ -93,21 +93,21 @@ public class MembersService {
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);
 
         LoginResponseDto loginResponseDto = new LoginResponseDto(member.get().getMemberName());
-        return new Response().toResponseEntity(LOGIN_SUCCESS, loginResponseDto);
+        return Response.toResponseEntity(LOGIN_SUCCESS, loginResponseDto);
 
     }
 
     public ResponseEntity<Response>accountCheck(String account) {
         if (membersRepository.findByAccount(account).isPresent()) {
-            return new Response().toAllExceptionResponseEntity(DUPLICATE_USER, account);
+            return Response.toAllExceptionResponseEntity(DUPLICATE_USER, account);
         }
-        return new Response().toResponseEntity(SuccessMessage.ACOUNT_CHECK_SUCCESS);
+        return Response.toResponseEntity(SuccessMessage.ACOUNT_CHECK_SUCCESS);
     }
 
     public ResponseEntity<Response> emailCheck(String email) {
         if (membersRepository.findByEmail(email).isPresent()) {
-            return new Response().toAllExceptionResponseEntity(DUPLICATE_EMAIL, email);
+            return Response.toAllExceptionResponseEntity(DUPLICATE_EMAIL, email);
         }
-        return new Response().toResponseEntity(SuccessMessage.EMAIL_CHECK_SUCCESS);
+        return Response.toResponseEntity(SuccessMessage.EMAIL_CHECK_SUCCESS);
     }
 }

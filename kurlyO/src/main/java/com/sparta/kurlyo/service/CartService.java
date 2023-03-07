@@ -136,7 +136,7 @@ public class CartService {
         }
 
         cartRepository.delete(cart);
-        return new Response().toResponseEntity(DELETE_CART_GOODS_SUCCESS);
+        return Response.toResponseEntity(DELETE_CART_GOODS_SUCCESS);
     }
 
     @Transactional
@@ -149,13 +149,13 @@ public class CartService {
         );
         String test = cart.getMembers().getAccount();
         if (!cart.getMembers().getAccount().equals(member.getAccount())) {
-            return new Response().toExceptionResponseEntity(CANNOT_CART_GOODS_BUY);
+            return Response.toExceptionResponseEntity(CANNOT_CART_GOODS_BUY);
         }
         if (!(cart.getAmount() <= goods.getCount())) {
-            return new Response().toAllExceptionResponseEntity(GOODS_COUNT_INVALID_RANGE, "최대 수량은 " + goods.getCount() + " 입니다.");
+            return Response.toAllExceptionResponseEntity(GOODS_COUNT_INVALID_RANGE, "최대 수량은 " + goods.getCount() + " 입니다.");
         }
         goodsRepository.updateGoodsCount(goods.getId(), goods.getCount() - cart.getAmount());
         cartRepository.delete(cart);
-        return new Response().toResponseEntity(BUY_SUCCESS);
+        return Response.toResponseEntity(BUY_SUCCESS);
     }
 }

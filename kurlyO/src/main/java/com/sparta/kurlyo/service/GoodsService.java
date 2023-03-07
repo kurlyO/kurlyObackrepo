@@ -35,8 +35,8 @@ public class GoodsService {
     //상세 페이지
     @Transactional(readOnly = true)
     public ResponseEntity<Response> getDetails(long goodsId) {
-        return new Response().toResponseEntity(GOODS_DETAIL_SUCCESS,
-                new GoodsResponseDto(getGoods(goodsId)));
+        return Response.toResponseEntity(GOODS_DETAIL_SUCCESS,
+                GoodsResponseDto.of(getGoods(goodsId)));
     }
 
     private Goods getGoods(long goodsId) {
@@ -48,13 +48,13 @@ public class GoodsService {
     //상품 등록 페이지
     @Transactional
     public ResponseEntity<Response> create(GoodsRequestDto goodsRequestDto) throws IOException {
-        if (goodsRepository.findByGoodsName(goodsRequestDto.getGoodsName().toString()).isPresent()){
-            return new Response().toAllExceptionResponseEntity(DUPLICATE_GOODS, goodsRequestDto.getGoodsName());
+        if (goodsRepository.findByGoodsName(goodsRequestDto.getGoodsName()).isPresent()){
+            return Response.toAllExceptionResponseEntity(DUPLICATE_GOODS, goodsRequestDto.getGoodsName());
         }
         String imageUrl = s3Uploader.uploadFiles(goodsRequestDto.getMultipartFile(), "images");
         Category category = categoryRepository.findByName(goodsRequestDto.getCategory());
         goodsRepository.save(new Goods(goodsRequestDto, imageUrl, category));
-        return new Response().toResponseEntity(SuccessMessage.GOODS_POST_SUCCESS);
+        return Response.toResponseEntity(SuccessMessage.GOODS_POST_SUCCESS);
     }
 
     @Transactional
@@ -77,8 +77,7 @@ public class GoodsService {
         for (Goods goodsGet : goodsPage) {
             goodsList.add(GoodsListResponseDto.of(goodsGet));
         }
-        return new Response().toResponseEntity(GOODS_ALL_CATEGORY_LIST_SUCCESS,
-                goodsList);
+        return Response.toResponseEntity(GOODS_ALL_CATEGORY_LIST_SUCCESS, goodsList);
     }
 
     @Transactional
@@ -93,8 +92,7 @@ public class GoodsService {
         for (Goods goods : goodsCategoryPage) {
             goodsCategoryList.add(GoodsListResponseDto.of(goods));
         }
-        return new Response().toResponseEntity(GOODS_CATEGORY_LIST_SUCCESS,
-                goodsCategoryList);
+        return Response.toResponseEntity(GOODS_CATEGORY_LIST_SUCCESS, goodsCategoryList);
     }
 
     @Transactional
@@ -107,6 +105,6 @@ public class GoodsService {
         if (amount <= 0) {
             return Response.toAllExceptionResponseEntity(AMOUNT_UNDER_COUNT, new AmountResponseDto(1));
         }
-        return new Response().toResponseEntity(GOODS_UPDATE_AMOUNT_SUCCESS, new AmountResponseDto(goods.getCount()));
+        return Response.toResponseEntity(GOODS_UPDATE_AMOUNT_SUCCESS, new AmountResponseDto(goods.getCount()));
     }
 }
