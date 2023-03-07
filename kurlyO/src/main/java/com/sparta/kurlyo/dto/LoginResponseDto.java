@@ -10,9 +10,6 @@ import lombok.NoArgsConstructor;
 public class LoginResponseDto {
     private String name;
 
-//    public LoginResponseDto(String name) {
-//        this.name = name;
-//    }
     public static LoginResponseDto of(String name) {
         return LoginResponseDto.builder()
                 .name(name)
