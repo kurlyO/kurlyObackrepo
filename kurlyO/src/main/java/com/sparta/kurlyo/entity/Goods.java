@@ -52,18 +52,18 @@ public class Goods extends TimeStamped{
         this.content = "images";
     }
 
-    public Goods(GoodsRequestDto goodsRequestDto, Category category){
-        this.category = category;
-        this.goodsName = goodsRequestDto.getGoodsName();
-        this.price = goodsRequestDto.getPrice();
-        this.summary = goodsRequestDto.getSummary();
-        this.count = goodsRequestDto.getCount();
-        this.image = goodsRequestDto.getImage();
-        this.packaging = Packaging.valueOf(goodsRequestDto.getPackaging());
-        this.content = "images";
-        //컨텐츠 이미지 고려
-        //게시자가 관리자이지만 어떤 계정으로 등록하였는지 체크 필요할 듯 상의 후 결정
-    }
+//    public Goods(GoodsRequestDto goodsRequestDto, Category category){
+//        this.category = category;
+//        this.goodsName = goodsRequestDto.getGoodsName();
+//        this.price = goodsRequestDto.getPrice();
+//        this.summary = goodsRequestDto.getSummary();
+//        this.count = goodsRequestDto.getCount();
+//        this.image = goodsRequestDto.getImage();
+//        this.packaging = Packaging.valueOf(goodsRequestDto.getPackaging());
+//        this.content = "images";
+//        //컨텐츠 이미지 고려
+//        //게시자가 관리자이지만 어떤 계정으로 등록하였는지 체크 필요할 듯 상의 후 결정
+//    }
 
 //    @Column(nullable = false)
 //    private String createdAt;

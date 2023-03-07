@@ -53,12 +53,12 @@ public class GoodsService {
         return Response.toResponseEntity(SuccessMessage.GOODS_POST_SUCCESS);
     }
 
-    @Transactional
-    public ResponseDto<Boolean> create2(GoodsRequestDto goodsRequestDto) {
-        Category category = categoryRepository.findByName(goodsRequestDto.getCategory());
-        goodsRepository.save(new Goods(goodsRequestDto, category));
-        return ResponseDto.success(null);
-    }
+//    @Transactional
+//    public ResponseDto<Boolean> create2(GoodsRequestDto goodsRequestDto) {
+//        Category category = categoryRepository.findByName(goodsRequestDto.getCategory());
+//        goodsRepository.save(new Goods(goodsRequestDto, category));
+//        return ResponseDto.success(null);
+//    }
 
     //상품 전체 리스트(현재 페이징 지정값 전달 /프론트 진행 상황에 맞춰 변경 예정)
     //작성일자/수정일자 dto 추가해서 넣을지 결정 필요
@@ -77,7 +77,7 @@ public class GoodsService {
     }
 
     @Transactional
-    public ResponseEntity<Response> getSummaryList(String categoryName) {
+    public ResponseEntity<Response> getGoodsCategoriesList(String categoryName) {
         Sort sort = Sort.by(Sort.Direction.DESC, "createAt");
         Pageable pageable = PageRequest.of(0, 99, sort);
         Page<Goods> goodsCategoryPage = goodsRepository.findAllByCategoryName(categoryName, pageable);

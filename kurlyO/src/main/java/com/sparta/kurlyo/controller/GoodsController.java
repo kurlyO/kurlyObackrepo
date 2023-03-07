@@ -45,7 +45,7 @@ public class GoodsController {
     @SecurityRequirements
     @GetMapping("/goods/categories/{categoryName}")
     public ResponseEntity<Response> getGoodsCategoriesList(@PathVariable String categoryName) {
-        return goodsService.getSummaryList(categoryName);
+        return goodsService.getGoodsCategoriesList(categoryName);
     }
 
     @GetMapping("/goods/categories")
@@ -53,10 +53,10 @@ public class GoodsController {
         return goodsService.getCategories();
     }
 
-    @PostMapping("/goods2")
-    public ResponseDto<Boolean> createGoods2(@RequestBody GoodsRequestDto goodsRequestDto) {
-        return goodsService.create2(goodsRequestDto);
-    }
+//    @PostMapping("/goods2")
+//    public ResponseDto<Boolean> createGoods2(@RequestBody GoodsRequestDto goodsRequestDto) {
+//        return goodsService.create2(goodsRequestDto);
+//    }
 
     @PostMapping(value = "/goods", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Response> createGoods(@ModelAttribute GoodsRequestDto goodsRequestDto) throws IOException {
