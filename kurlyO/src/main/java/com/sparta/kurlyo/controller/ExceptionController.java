@@ -46,9 +46,9 @@ public class ExceptionController {
         return Response.toAllExceptionResponseEntity(HttpStatus.BAD_REQUEST, ex.getMessage(), ex.toString());
     }
     @ExceptionHandler({BoughtException.class})
-    protected ResponseEntity<Response> handleCustomRollBackException(BoughtException e) {
+    protected ResponseEntity<Response> handleCustomRollBackException(BoughtException e, Object object) {
         log.error("handleCustomException throw CustomException : {}", e.getExceptionMessage());
-        return Response.toAllExceptionResponseEntity(e.getExceptionMessage(), e.getObject());
+        return Response.toAllExceptionResponseEntity(e.getExceptionMessage(),object);
     }
 
 }
