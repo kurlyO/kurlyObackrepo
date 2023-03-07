@@ -21,20 +21,22 @@ public class ExceptionController {
 
     //정규식
     @ExceptionHandler({BindException.class})
-    public ResponseEntity bindException(BindException ex) {
-        return new Response().toAllExceptionResponseEntity(HttpStatus.BAD_REQUEST, ex.getFieldError().getDefaultMessage(), ex.getBindingResult().getTarget());
+    public ResponseEntity<Response> bindException(BindException ex) {
+        return Response.toAllExceptionResponseEntity(HttpStatus.BAD_REQUEST,
+                ex.getFieldError().getDefaultMessage(), ex.getBindingResult().getTarget());
     }
 
     //마이리스트 토큰 없을시
     @ExceptionHandler({MissingRequestHeaderException.class})
-    public ResponseEntity missingRequestHeaderException(MissingRequestHeaderException ex) {
-        return new Response().toAllExceptionResponseEntity(HttpStatus.BAD_REQUEST, "로그인이 되어있지 않습니다.", null);
+    public ResponseEntity<Response> missingRequestHeaderException(MissingRequestHeaderException ex) {
+        return Response.toAllExceptionResponseEntity(HttpStatus.BAD_REQUEST,
+                "로그인이 되어있지 않습니다.", null);
     }
 
     // 500
     @ExceptionHandler({Exception.class})
-    public ResponseEntity handleAll(final Exception ex) {
-        return new Response().toAllExceptionResponseEntity(HttpStatus.BAD_REQUEST, ex.getMessage(), ex.toString());
+    public ResponseEntity<Response> handleAll(final Exception ex) {
+        return Response.toAllExceptionResponseEntity(HttpStatus.BAD_REQUEST, ex.getMessage(), ex.toString());
     }
 
 }

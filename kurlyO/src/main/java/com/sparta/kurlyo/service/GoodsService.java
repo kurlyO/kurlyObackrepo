@@ -15,7 +15,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,20 +34,17 @@ public class GoodsService {
     //상세 페이지
     @Transactional(readOnly = true)
     public ResponseEntity<Response> getDetails(long goodsId) {
-        return Response.toResponseEntity(GOODS_DETAIL_SUCCESS,
-                GoodsResponseDto.of(getGoods(goodsId)));
+        return Response.toResponseEntity(GOODS_DETAIL_SUCCESS, GoodsResponseDto.of(getGoods(goodsId)));
     }
 
     private Goods getGoods(long goodsId) {
-        return goodsRepository.findById(goodsId).orElseThrow(
-                () -> new CustomException(GOODS_NOT_FOUND)
-        );
+        return goodsRepository.findById(goodsId).orElseThrow(() -> new CustomException(GOODS_NOT_FOUND));
     }
 
     //상품 등록 페이지
     @Transactional
     public ResponseEntity<Response> create(GoodsRequestDto goodsRequestDto) throws IOException {
-        if (goodsRepository.findByGoodsName(goodsRequestDto.getGoodsName()).isPresent()){
+        if (goodsRepository.findByGoodsName(goodsRequestDto.getGoodsName()).isPresent()) {
             return Response.toAllExceptionResponseEntity(DUPLICATE_GOODS, goodsRequestDto.getGoodsName());
         }
         String imageUrl = s3Uploader.uploadFiles(goodsRequestDto.getMultipartFile(), "images");
@@ -71,11 +67,11 @@ public class GoodsService {
 //    public ResponseDto<List<GoodsListResponseDto>> getCategoriesList(int page, int size, String sortBy) {
         Sort sort = Sort.by(Sort.Direction.DESC, "createAt");
 //        Sort sort = Sort.by(Sort.Direction.DESC, sortBy);
-        Pageable pageable = PageRequest.of(0, 99, sort);
+        Pageable pageable = PageRequest.of(0, 999, sort);
         Page<Goods> goodsPage = goodsRepository.findAll(pageable);
-        List<GoodsListResponseDto> goodsList = new ArrayList<>();
+        List<GoodsResponseDto> goodsList = new ArrayList<>();
         for (Goods goodsGet : goodsPage) {
-            goodsList.add(GoodsListResponseDto.of(goodsGet));
+            goodsList.add(GoodsResponseDto.of(goodsGet));
         }
         return Response.toResponseEntity(GOODS_ALL_CATEGORY_LIST_SUCCESS, goodsList);
     }
@@ -88,9 +84,9 @@ public class GoodsService {
         if (goodsCategoryPage.isEmpty()) {
             throw new CustomException(CARTEGORY_NOT_FOUND);
         }
-        List<GoodsListResponseDto> goodsCategoryList = new ArrayList<>();
+        List<GoodsResponseDto> goodsCategoryList = new ArrayList<>();
         for (Goods goods : goodsCategoryPage) {
-            goodsCategoryList.add(GoodsListResponseDto.of(goods));
+            goodsCategoryList.add(GoodsResponseDto.of(goods));
         }
         return Response.toResponseEntity(GOODS_CATEGORY_LIST_SUCCESS, goodsCategoryList);
     }
@@ -106,5 +102,14 @@ public class GoodsService {
             return Response.toAllExceptionResponseEntity(AMOUNT_UNDER_COUNT, new AmountResponseDto(1));
         }
         return Response.toResponseEntity(GOODS_UPDATE_AMOUNT_SUCCESS, new AmountResponseDto(goods.getCount()));
+    }
+
+    @Transactional(readOnly = true)
+    public ResponseEntity<Response> getCategories() {
+        List<CategoryDto> categoryDtoList = new ArrayList<>();
+        for (Category category : categoryRepository.findAll()) {
+            categoryDtoList.add(CategoryDto.of(category));
+        }
+        return Response.toResponseEntity(CATEGORY_INDEX_SUCCESS, categoryDtoList);
     }
 }

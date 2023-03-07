@@ -52,6 +52,7 @@ public class CartController {
                   @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return cartService.deleteGoodsCart(cartId,userDetails.getMember());
     }
+
     @PostMapping("/cart/bought/{cartId}")
     public ResponseEntity<Response> BuyComment(@PathVariable Long cartId,
                    @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails) {

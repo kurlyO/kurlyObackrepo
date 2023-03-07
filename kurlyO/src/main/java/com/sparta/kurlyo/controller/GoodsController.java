@@ -34,18 +34,23 @@ public class GoodsController {
         return goodsService.updateAmount(goodsId, isPlus, amount_now);
     }
 
-    //카테고리 전체 리스트
+    //상품 전체 리스트
     @SecurityRequirements
-    @GetMapping("/categories")
-    public ResponseEntity<Response> getCategoriesList() {
+    @GetMapping("/goods")
+    public ResponseEntity<Response> getGoodsList() {
         return goodsService.getCategoriesList();
     }
 
     //카테고리 구분 리스트
     @SecurityRequirements
-    @GetMapping("/categories/{categoryName}")
-    public ResponseEntity<Response> getCategoriesList(@PathVariable String categoryName) {
+    @GetMapping("/goods/categories/{categoryName}")
+    public ResponseEntity<Response> getGoodsCategoriesList(@PathVariable String categoryName) {
         return goodsService.getSummaryList(categoryName);
+    }
+
+    @GetMapping("/goods/categories")
+    public ResponseEntity<Response> getCategories() {
+        return goodsService.getCategories();
     }
 
     @PostMapping("/goods2")
@@ -57,4 +62,5 @@ public class GoodsController {
     public ResponseEntity<Response> createGoods(@ModelAttribute GoodsRequestDto goodsRequestDto) throws IOException {
         return goodsService.create(goodsRequestDto);
     }
+
 }
