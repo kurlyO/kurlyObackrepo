@@ -8,6 +8,7 @@ import com.sparta.kurlyo.repository.CartRepository;
 import com.sparta.kurlyo.repository.GoodsRepository;
 import com.sparta.kurlyo.repository.MembersRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ import static com.sparta.kurlyo.dto.SuccessMessage.*;
 
 
 
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CartService {
@@ -158,7 +159,7 @@ public class CartService {
             throw new CustomException(CANNOT_CART_GOODS_BUY);
         }
         if (!(cart.getAmount() <= goods.getCount())) {
-            throw new BoughtException(GOODS_COUNT_INVALID_RANGE,"상품 :" + goods.getGoodsName() + "의 최대 수량은 " + goods.getCount() + " 입니다.");
+            throw new BoughtException(GOODS_COUNT_INVALID_RANGE, "상품 :" + goods.getGoodsName() + "의 최대 수량은 " + goods.getCount() + " 입니다.");
         }
         goodsRepository.updateGoodsCount(goods.getId(), goods.getCount() - cart.getAmount());
         cartRepository.delete(cart);
