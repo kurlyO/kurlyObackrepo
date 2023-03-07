@@ -36,7 +36,6 @@ public class GoodsService {
     public ResponseEntity<Response> getDetails(long goodsId) {
         return Response.toResponseEntity(GOODS_DETAIL_SUCCESS, GoodsResponseDto.of(getGoods(goodsId)));
     }
-
     private Goods getGoods(long goodsId) {
         return goodsRepository.findById(goodsId).orElseThrow(() -> new CustomException(GOODS_NOT_FOUND));
     }
@@ -112,4 +111,5 @@ public class GoodsService {
         }
         return Response.toResponseEntity(CATEGORY_INDEX_SUCCESS, categoryDtoList);
     }
+
 }

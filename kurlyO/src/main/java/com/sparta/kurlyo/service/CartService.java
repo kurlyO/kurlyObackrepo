@@ -145,22 +145,24 @@ public class CartService {
     }
 
     @Transactional
-    public ResponseEntity<Response> BuyGoodsCart(Long cartId, Members member) {
+    public ResponseEntity<Response> BuyGoodsCart(CartBoughtRequestDto cartIdList, Members member) {
+
+        for (Long cartId : cartIdList.getCartIdList()){
         Cart cart = cartRepository.findById(cartId).orElseThrow(
                 () -> new CustomException(CART_NOT_FOUND)
         );
         Goods goods = goodsRepository.findById(cart.getGoods().getId()).orElseThrow(
                 () -> new CustomException(GOODS_NOT_FOUND)
         );
-        String test = cart.getMembers().getAccount();
         if (!cart.getMembers().getAccount().equals(member.getAccount())) {
-            return Response.toExceptionResponseEntity(CANNOT_CART_GOODS_BUY);
+            throw new CustomException(CANNOT_CART_GOODS_BUY);
         }
         if (!(cart.getAmount() <= goods.getCount())) {
-            return Response.toAllExceptionResponseEntity(GOODS_COUNT_INVALID_RANGE, "최대 수량은 " + goods.getCount() + " 입니다.");
+            throw new BoughtException(GOODS_COUNT_INVALID_RANGE,"상품 :" + goods.getGoodsName() + "의 최대 수량은 " + goods.getCount() + " 입니다.");
         }
         goodsRepository.updateGoodsCount(goods.getId(), goods.getCount() - cart.getAmount());
         cartRepository.delete(cart);
+        }
         return Response.toResponseEntity(BUY_SUCCESS);
     }
 }

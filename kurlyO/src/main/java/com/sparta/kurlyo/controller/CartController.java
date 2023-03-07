@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -52,11 +54,11 @@ public class CartController {
                   @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return cartService.deleteGoodsCart(cartId,userDetails.getMember());
     }
-
-    @PostMapping("/cart/bought/{cartId}")
-    public ResponseEntity<Response> BuyComment(@PathVariable Long cartId,
-                   @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return cartService.BuyGoodsCart(cartId,userDetails.getMember());
+//parameter hidden = true 삭제 필요
+    @PostMapping("/cart/bought")
+    public ResponseEntity<Response> BuyComment(@RequestBody CartBoughtRequestDto cartIdList,
+                                               @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return cartService.BuyGoodsCart(cartIdList,userDetails.getMember());
     }
 
 }
