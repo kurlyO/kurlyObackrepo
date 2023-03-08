@@ -1,6 +1,5 @@
 package com.sparta.kurlyo.entity;
 
-import com.sparta.kurlyo.dto.CartRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -16,27 +15,23 @@ public class Cart extends TimeStamped {
     private Long id;
 
     @Column(nullable = false)
-    private int amount;
+    private Integer amount;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "members_id", nullable = false)
-    private Members member;
+    private Members members;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY) //N+1 발생 처리해야함
     @JoinColumn(name = "goods_id", nullable = false)
     private Goods goods;
 
-    public Cart(Members member, Goods goods) {
-        this.member = member;
+    public Cart(Members members, Goods goods, int amount) {
+        this.members = members;
         this.goods = goods;
-        this.amount = 1;
+        this.amount = amount;
     }
 
-    public void addAmount() {
-        this.amount += 1;
-    }
-
-    public void update(int amount){
+    public void updateAmount(int amount) {
         this.amount += amount;
     }
 }

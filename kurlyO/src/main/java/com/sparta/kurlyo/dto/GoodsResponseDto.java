@@ -1,13 +1,13 @@
 package com.sparta.kurlyo.dto;
 
 import com.sparta.kurlyo.entity.Goods;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
+@Builder
 public class GoodsResponseDto {
-    private long goodsId;
+    private Long goodsId;
     private String goodsName;
     private int price;
     private String summary;
@@ -15,13 +15,17 @@ public class GoodsResponseDto {
     private String packaging;
     private String category;
 
-    public GoodsResponseDto(Goods goods) {
-        this.goodsId = goods.getId();
-        this.goodsName = goods.getGoodsName();
-        this.price = goods.getPrice();
-        this.summary = goods.getSummary();
-        this.image = goods.getImage();
-        this.packaging = goods.getPackaging().name();
-        this.category = goods.getCategory().getName();
+    public static GoodsResponseDto of(Goods goods) {
+        return GoodsResponseDto.builder()
+                .goodsId(goods.getId())
+                .goodsName(goods.getGoodsName())
+                .price(goods.getPrice())
+                .summary(goods.getSummary())
+                .image(goods.getImage())
+                .packaging(goods.getPackaging().getKorean())
+                .category(goods.getCategory().getName())
+                .build();
     }
+
+
 }

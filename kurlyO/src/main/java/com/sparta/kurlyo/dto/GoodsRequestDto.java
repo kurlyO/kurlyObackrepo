@@ -1,17 +1,21 @@
 package com.sparta.kurlyo.dto;
 
-import com.sparta.kurlyo.entity.Category;
-import com.sparta.kurlyo.entity.Packaging;
 import lombok.Getter;
-
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
+@Setter
+@NoArgsConstructor
 public class GoodsRequestDto {
     private String goodsName;
-    private int price;
+    private Integer price;
     private String summary;
+    private String image;
     private String category;
     private String packaging;
+    private Integer count;
+
+    private MultipartFile multipartFile;
 }

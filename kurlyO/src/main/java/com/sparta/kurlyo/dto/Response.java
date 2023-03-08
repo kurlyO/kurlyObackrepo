@@ -43,6 +43,16 @@ public class Response<T> {
                         .build()
                 );
     }
+    public static ResponseEntity<Response> toAllExceptionResponseEntity(ExceptionMessage exceptionMessage , Object data) {
+        return ResponseEntity
+                .status(exceptionMessage.getHttpStatus())
+                .body(Response.builder()
+                        .status(!exceptionMessage.getHttpStatus().isError())
+                        .message(exceptionMessage.getDetail())
+                        .data(data)
+                        .build()
+                );
+    }
 
     public static ResponseEntity<Response> toResponseEntity(SuccessMessage message) {
         return ResponseEntity
@@ -54,7 +64,7 @@ public class Response<T> {
                         .build()
                 );
     }
-    public ResponseEntity<Response> toResponseEntity(SuccessMessage message, T data) {
+    public static<T> ResponseEntity<Response> toResponseEntity(SuccessMessage message, T data) {
         return ResponseEntity
                 .status(message.getHttpStatus())
                 .body(Response.builder()

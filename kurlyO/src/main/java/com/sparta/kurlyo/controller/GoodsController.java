@@ -1,19 +1,16 @@
 package com.sparta.kurlyo.controller;
 
-import com.sparta.kurlyo.dto.GoodsListResponseDto;
 import com.sparta.kurlyo.dto.GoodsRequestDto;
 import com.sparta.kurlyo.dto.ResponseDto;
 import com.sparta.kurlyo.dto.Response;
-import com.sparta.kurlyo.entity.Goods;
 import com.sparta.kurlyo.service.GoodsService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -22,18 +19,48 @@ public class GoodsController {
 
     private final GoodsService goodsService;
 
+    // 상품 상세페이지
+    @SecurityRequirements
     @GetMapping("/goods/{goodsId}")
     public ResponseEntity<Response> getDetails(@PathVariable long goodsId) {
         return goodsService.getDetails(goodsId);
     }
 
-    @GetMapping("/categories")
-    public ResponseDto<List<GoodsListResponseDto>> getCategoriesList() {
+    // 상세페이지 상품 수량 조절
+    @PostMapping("/goods/amount/{goodsId}")
+    public ResponseEntity<Response> updateAmount(@PathVariable("goodsId") long goodsId,
+                                                @RequestParam("isPlus") boolean isPlus,
+                                         @RequestParam("amount_now") int amount_now) {
+        return goodsService.updateAmount(goodsId, isPlus, amount_now);
+    }
+
+    //상품 전체 리스트
+    @SecurityRequirements
+    @GetMapping("/goods")
+    public ResponseEntity<Response> getGoodsList() {
         return goodsService.getCategoriesList();
     }
-//    @Secured(value = UserRoleEnum.ADMIN)
-    @PostMapping("/goods")
-    public ResponseDto<Boolean> createGoods(@RequestPart GoodsRequestDto goodsRequestDto, @RequestPart(value = "image") MultipartFile multipartFile) throws IOException {
-        return goodsService.create(goodsRequestDto, multipartFile);
+
+    //카테고리 구분 리스트
+    @SecurityRequirements
+    @GetMapping("/goods/categories/{categoryName}")
+    public ResponseEntity<Response> getGoodsCategoriesList(@PathVariable String categoryName) {
+        return goodsService.getGoodsCategoriesList(categoryName);
     }
+
+    @GetMapping("/goods/categories")
+    public ResponseEntity<Response> getCategories() {
+        return goodsService.getCategories();
+    }
+
+//    @PostMapping("/goods2")
+//    public ResponseDto<Boolean> createGoods2(@RequestBody GoodsRequestDto goodsRequestDto) {
+//        return goodsService.create2(goodsRequestDto);
+//    }
+
+    @PostMapping(value = "/goods", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<Response> createGoods(@ModelAttribute GoodsRequestDto goodsRequestDto) throws IOException {
+        return goodsService.create(goodsRequestDto);
+    }
+
 }
