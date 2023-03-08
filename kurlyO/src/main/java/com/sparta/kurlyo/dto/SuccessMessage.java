@@ -18,6 +18,7 @@ public enum SuccessMessage {
     GOODS_CATEGORY_LIST_SUCCESS(HttpStatus.OK, "카테고리 상품 리스트 불러오기 성공"),
     GOODS_ALL_CATEGORY_LIST_SUCCESS(HttpStatus.OK, "카테고리 상품 전체 리스트 불러오기 성공"),
     ADD_CART_SUCCESS(HttpStatus.OK, "해당 상품을 장바구니에 넣었습니다."),
+    UPDATE_CART_SUCCESS(HttpStatus.OK, "상품 수량 조절에 성공했습니다."),
     DELETE_CART_GOODS_SUCCESS(HttpStatus.OK, "해당 상품을 장바구니에서 삭제하셨습니다."),
     CATEGORY_INDEX_SUCCESS(HttpStatus.OK, "카테고리 목록 불러오기 성공"),
 

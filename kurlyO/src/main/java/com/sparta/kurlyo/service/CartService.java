@@ -42,14 +42,14 @@ public class CartService {
             if (checkAmount(amount, remain)) {
                 cart.get().updateAmount(amount);
             } else {
-                return Response.toAllExceptionResponseEntity(AMOUNT_OVER_COUNT, new AmountResponseDto(remain));
+                return Response.toAllExceptionResponseEntity(AMOUNT_OVER_COUNT, new CountResponseDto(remain));
             }
         } else {
             int remain = goods.getCount();
             if (checkAmount(amount, remain)) {
                 cartRepository.save(new Cart(member, goods, amount));
             } else {
-                return Response.toAllExceptionResponseEntity(AMOUNT_OVER_COUNT, new AmountResponseDto(remain));
+                return Response.toAllExceptionResponseEntity(AMOUNT_OVER_COUNT, new CountResponseDto(remain));
             }
         }
 
@@ -121,10 +121,10 @@ public class CartService {
             throw new CustomException(AMOUNT_UNDER_COUNT);
         }
         if (cart.getGoods().getCount() < cart.getAmount()) {
-            return Response.toAllExceptionResponseEntity(AMOUNT_OVER_COUNT, new AmountResponseDto(cart.getGoods().getCount()));
+            return Response.toAllExceptionResponseEntity(AMOUNT_OVER_COUNT, new CountResponseDto(cart.getGoods().getCount()));
         }
 
-        return Response.toResponseEntity(ADD_CART_SUCCESS, CartResponseDto.of(cart));
+        return Response.toResponseEntity(UPDATE_CART_SUCCESS, CartResponseDto.of(cart));
     }
 
     //오류 문제 객체끼리 비교하셨습니다 객체 == 객체

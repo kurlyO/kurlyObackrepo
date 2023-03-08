@@ -16,6 +16,7 @@ public class CartResponseDto {
     private String goodsName;
     private int price;
     private int amount;
+    private int goodsCount;
 
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
