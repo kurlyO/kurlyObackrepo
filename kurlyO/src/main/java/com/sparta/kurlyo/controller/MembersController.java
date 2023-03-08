@@ -29,7 +29,6 @@ public class MembersController {
     public ResponseEntity<Response> login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
         return membersService.login(loginRequestDto, response);
     }
-
     @SecurityRequirements
     @GetMapping("/signup/accountCheck/{account}")
     public ResponseEntity<Response> accountCheck(@PathVariable String account) {
