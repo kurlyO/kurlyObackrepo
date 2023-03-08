@@ -112,19 +112,18 @@ public class CartService {
         // isPlus == true : cart.amount += 1
         // isPlus == false : cart.amount -= 1
         if (requestDto.getIsPlus()) {
+            if(cart.getGoods().getCount() <= cart.getAmount()) {
+                return Response.toAllExceptionResponseEntity(AMOUNT_OVER_COUNT, new CountResponseDto(cart.getGoods().getCount()));
+            }
             cart.updateAmount(1);
         } else {
+            if(cart.getAmount() <= 1) {
+                throw new CustomException(AMOUNT_UNDER_COUNT);
+            }
             cart.updateAmount(-1);
         }
-
-        if (cart.getAmount() <= 0) {
-            throw new CustomException(AMOUNT_UNDER_COUNT);
-        }
-        if (cart.getGoods().getCount() < cart.getAmount()) {
-            return Response.toAllExceptionResponseEntity(AMOUNT_OVER_COUNT, new CountResponseDto(cart.getGoods().getCount()));
-        }
-
         return Response.toResponseEntity(UPDATE_CART_SUCCESS, CartResponseDto.of(cart));
+
     }
 
     //오류 문제 객체끼리 비교하셨습니다 객체 == 객체
