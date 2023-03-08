@@ -76,7 +76,7 @@ public class CartService {
     }
 
     @Transactional(readOnly = true)
-    public ResponseEntity<CartWholeResponseDto> getCart(Members member) {
+    public ResponseEntity<Response> getCart(Members member) {
         // 장바구니 목록을 가져오는 것
         CartWholeResponseDto dto = new CartWholeResponseDto();
         // 특정 사용자의 장바구니 목록을 가지고 옴
@@ -85,7 +85,7 @@ public class CartService {
         for (Cart cart : cartList) {
             dto.addGoodsCart(cart);
         }
-        return ResponseEntity.ok(dto);
+        return Response.toResponseEntity(CART_LIST_SUCCESS, dto);
     }
 
     @Transactional
