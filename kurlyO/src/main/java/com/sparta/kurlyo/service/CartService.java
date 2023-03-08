@@ -22,7 +22,6 @@ import static com.sparta.kurlyo.dto.ExceptionMessage.*;
 import static com.sparta.kurlyo.dto.SuccessMessage.*;
 
 
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -90,7 +89,7 @@ public class CartService {
     }
 
     @Transactional
-    public ResponseEntity<CartResponseDto> updateGoodsCart
+    public ResponseEntity<Response> updateGoodsCart
             (Long cartId,
              CartRequestDto requestDto,
              Members member) {
@@ -122,10 +121,10 @@ public class CartService {
             throw new CustomException(AMOUNT_UNDER_COUNT);
         }
         if (cart.getGoods().getCount() < cart.getAmount()) {
-            throw new CustomException(AMOUNT_OVER_COUNT);
+            return Response.toAllExceptionResponseEntity(AMOUNT_OVER_COUNT, new AmountResponseDto(cart.getGoods().getCount()));
         }
 
-        return ResponseEntity.ok(CartResponseDto.of(cart));
+        return Response.toResponseEntity(ADD_CART_SUCCESS, CartResponseDto.of(cart));
     }
 
     //오류 문제 객체끼리 비교하셨습니다 객체 == 객체
@@ -148,21 +147,21 @@ public class CartService {
     @Transactional
     public ResponseEntity<Response> BuyGoodsCart(CartBoughtRequestDto cartIdList, Members member) {
 
-        for (Long cartId : cartIdList.getCartIdList()){
-        Cart cart = cartRepository.findById(cartId).orElseThrow(
-                () -> new CustomException(CART_NOT_FOUND)
-        );
-        Goods goods = goodsRepository.findById(cart.getGoods().getId()).orElseThrow(
-                () -> new CustomException(GOODS_NOT_FOUND)
-        );
-        if (!cart.getMembers().getAccount().equals(member.getAccount())) {
-            throw new CustomException(CANNOT_CART_GOODS_BUY);
-        }
-        if (!(cart.getAmount() <= goods.getCount())) {
-            throw new BoughtException(GOODS_COUNT_INVALID_RANGE, "상품 :" + goods.getGoodsName() + "의 최대 수량은 " + goods.getCount() + " 입니다.");
-        }
-        goodsRepository.updateGoodsCount(goods.getId(), goods.getCount() - cart.getAmount());
-        cartRepository.delete(cart);
+        for (Long cartId : cartIdList.getCartIdList()) {
+            Cart cart = cartRepository.findById(cartId).orElseThrow(
+                    () -> new CustomException(CART_NOT_FOUND)
+            );
+            Goods goods = goodsRepository.findById(cart.getGoods().getId()).orElseThrow(
+                    () -> new CustomException(GOODS_NOT_FOUND)
+            );
+            if (!cart.getMembers().getAccount().equals(member.getAccount())) {
+                throw new CustomException(CANNOT_CART_GOODS_BUY);
+            }
+            if (!(cart.getAmount() <= goods.getCount())) {
+                throw new BoughtException(GOODS_COUNT_INVALID_RANGE, "상품 :" + goods.getGoodsName() + "의 최대 수량은 " + goods.getCount() + " 입니다.");
+            }
+            goodsRepository.updateGoodsCount(goods.getId(), goods.getCount() - cart.getAmount());
+            cartRepository.delete(cart);
         }
         return Response.toResponseEntity(BUY_SUCCESS);
     }
