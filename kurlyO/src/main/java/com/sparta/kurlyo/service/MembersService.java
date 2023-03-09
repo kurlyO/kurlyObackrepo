@@ -71,7 +71,7 @@ public class MembersService {
         if (!(member.isPresent() && passwordEncoder.matches(password, member.get().getPassword()))) {
             throw new CustomException(MEMBER_NOT_FOUND);
         }
-        LoginResponseDto loginResponseDto = LoginResponseDto.of(member.get().getMemberName());
+        LoginResponseDto loginResponseDto = new LoginResponseDto(member.get().getMemberName());
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(member.get().getMemberName(), member.get().getRole()));
         return new Response().toResponseEntity(LOGIN_SUCCESS, loginResponseDto);
 

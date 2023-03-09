@@ -30,7 +30,7 @@ public class ExceptionController {
     @ExceptionHandler({BindException.class})
     public ResponseEntity<Response> bindException(BindException ex) {
         return Response.toAllExceptionResponseEntity(HttpStatus.BAD_REQUEST,
-                ex.getFieldError().getDefaultMessage(), ex.getBindingResult().getTarget());
+                ex.getFieldError().getDefaultMessage(), null);
     }
 
     //마이리스트 토큰 없을시

@@ -36,7 +36,7 @@ public enum ExceptionMessage {
     CART_GOODS_DELETE_FORBIDDEN(FORBIDDEN,"해당 장바구니의 삭제 권한이 없습니다."),
 
     /* 404 NOT_FOUND : Resource 를 찾을 수 없음 */
-    MEMBER_NOT_FOUND(NOT_FOUND, "해당 유저 정보를 찾을 수 없습니다"),
+    MEMBER_NOT_FOUND(NOT_FOUND, "아이디,비밀번호를 확인해주세요"),
     GOODS_NOT_FOUND(NOT_FOUND, "해당 상품을 찾을 수 없습니다"),
     REFRESH_TOKEN_NOT_FOUND(NOT_FOUND, "로그아웃 된 사용자입니다"),
     CARTEGORY_NOT_FOUND(NOT_FOUND, "해당 카테고리가 존재하지 않습니다."),
