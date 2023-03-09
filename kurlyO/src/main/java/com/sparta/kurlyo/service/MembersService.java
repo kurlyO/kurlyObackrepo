@@ -72,32 +72,10 @@ public class MembersService {
             throw new CustomException(MEMBER_NOT_FOUND);
         }
         LoginResponseDto loginResponseDto = new LoginResponseDto(member.get().getMemberName());
-        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(member.get().getMemberName(), member.get().getRole()));
+        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(member.get().getAccount(), member.get().getRole()));
         return new Response().toResponseEntity(LOGIN_SUCCESS, loginResponseDto);
 
     }
-
-    //    @Transactional(readOnly = true)
-//    public ResponseEntity<Response> login(LoginRequestDto loginRequestDto, HttpServletResponse response) {
-//        String account = loginRequestDto.getAccount();
-//        String password = loginRequestDto.getPassword();
-//
-//        Optional<Members> member = membersRepository.findByAccount(account);
-//        if (!(member.isPresent() && password.equals(member.get().getPassword()))) {
-//            throw new CustomException(MEMBER_NOT_FOUND);
-//        }
-//        String token = jwtUtil.createToken(member.get().getAccount(), member.get().getRole());
-//        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);
-//
-//        LoginResponseDto loginResponseDto = LoginResponseDto.of(member.get().getMemberName());
-//        return Response.toResponseEntity(LOGIN_SUCCESS, loginResponseDto);
-//
-//    }
-
-
-
-
-
 
     public ResponseEntity<Response> accountCheck(String account) {
         if (membersRepository.findByAccount(account).isPresent()) {
