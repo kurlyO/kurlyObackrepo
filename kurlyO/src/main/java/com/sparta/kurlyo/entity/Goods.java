@@ -36,7 +36,7 @@ public class Goods extends TimeStamped{
     private String image;
 
     @Column(nullable = false)
-//    @Enumerated
+//    @Enumerated(value = EnumType.STRING)
     private Packaging packaging;
 
     @Column
