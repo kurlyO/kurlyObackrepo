@@ -15,6 +15,8 @@ public class GoodsResponseDto {
     private String packaging;
     private String category;
 
+    private Integer count;
+
     public static GoodsResponseDto of(Goods goods) {
         return GoodsResponseDto.builder()
                 .goodsId(goods.getId())
@@ -24,6 +26,7 @@ public class GoodsResponseDto {
                 .image(goods.getImage())
                 .packaging(goods.getPackaging().getKorean())
                 .category(goods.getCategory().getName())
+                .count(goods.getCount())
                 .build();
     }
 
