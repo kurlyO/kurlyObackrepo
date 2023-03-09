@@ -66,7 +66,7 @@ public class GoodsService {
 //    public ResponseDto<List<GoodsListResponseDto>> getCategoriesList(int page, int size, String sortBy) {
         Sort sort = Sort.by(Sort.Direction.DESC, "createAt");
 //        Sort sort = Sort.by(Sort.Direction.DESC, sortBy);
-        Pageable pageable = PageRequest.of(0, 999, sort);
+        Pageable pageable = PageRequest.of(0, 99, sort);
         Page<Goods> goodsPage = goodsRepository.findAll(pageable);
         List<GoodsResponseDto> goodsList = new ArrayList<>();
         for (Goods goodsGet : goodsPage) {

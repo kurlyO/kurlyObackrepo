@@ -20,11 +20,11 @@ public class CartWholeResponseDto {
     public void addGoodsCart(Cart cart){
         Packaging packaging = cart.getGoods().getPackaging();
         if (packaging.equals(Packaging.COLD)) {
-            cold.add(new CartResponseDto(cart));
+            cold.add(CartResponseDto.of(cart));
         } else if (packaging.equals(Packaging.FROZEN)) {
-            frozen.add(new CartResponseDto(cart));
+            frozen.add(CartResponseDto.of(cart));
         } else if (packaging.equals(Packaging.ROOM_TEMP)) {
-            room_temperature.add(new CartResponseDto(cart));
+            room_temperature.add(CartResponseDto.of(cart));
         }
     }
 }
